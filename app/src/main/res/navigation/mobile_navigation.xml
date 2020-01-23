@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_tv_shows"
-        android:name="com.ardafirdausr.movie_catalogue.view.fragment.MoviesFragment"
+        android:name="com.ardafirdausr.movie_catalogue.view.fragment.TvShowsFragment"
         android:label="@string/title_tv_shows"
         tools:layout="@layout/fragment_tv_shows" />
 

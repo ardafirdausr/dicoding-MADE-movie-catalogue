@@ -21,7 +21,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.MovieDetailActivity" />
-        <activity android:name=".view.activity.MovieListActivity"/>
     </application>
 
 </manifest>
