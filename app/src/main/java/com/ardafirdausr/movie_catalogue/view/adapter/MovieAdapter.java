@@ -1,6 +1,5 @@
 package com.ardafirdausr.movie_catalogue.view.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
@@ -43,8 +44,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.bind(movie);
         holder.vgListitem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                onItemClickCallback.onClick(movie);
+            public void onClick(View view) {
+                onItemClickCallback.onClick(view, movie);
             }
         });
     }
@@ -55,13 +56,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     public interface OnItemClickCallback {
-        void onClick(Movie movie);
+        void onClick(View view, Movie movie);
     }
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ViewGroup vgListitem;
-        private TextView tvTitle, tvRating, tvDescription;
+        private TextView tvTitle, tvRating, tvDescription, tvReleaseDate;
         private ImageView ivPoster;
 
         ViewHolder(@NonNull View itemView) {
@@ -69,17 +70,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             vgListitem = itemView.findViewById(R.id.vg_list_item);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvRating = itemView.findViewById(R.id.tv_rating);
+            tvReleaseDate = itemView.findViewById(R.id.tv_release_date);
             tvDescription= itemView.findViewById(R.id.tv_description);
             ivPoster = itemView.findViewById(R.id.iv_poster);
         }
 
         void bind(Movie movie) {
-            String rating = movie.getVote() + " / " + 10;
             tvTitle.setText(movie.getTitle());
-            tvRating.setText(rating);
+            tvRating.setText(Double.toString(movie.getVote()));
             tvDescription.setText(movie.getDescription());
-            Picasso.get().load(movie.getImageUrl()).into(ivPoster);
+            tvReleaseDate.setText(movie.getReleaseDate());
+            Picasso.get()
+                    .load(movie.getImageUrl())
+                    .resize(90, 120)
+                    .transform(new RoundedCornersTransformation(10, 0))
+                    .into(ivPoster);
         }
+
     }
 
 }

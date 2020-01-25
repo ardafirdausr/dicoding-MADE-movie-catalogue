@@ -1,12 +1,11 @@
 package com.ardafirdausr.movie_catalogue.view.fragment;
 
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +22,6 @@ import com.ardafirdausr.movie_catalogue.api.movie.MovieApiClient;
 import com.ardafirdausr.movie_catalogue.api.movie.MovieApiInterface;
 import com.ardafirdausr.movie_catalogue.api.movie.response.Movie;
 import com.ardafirdausr.movie_catalogue.api.movie.response.MovieList;
-import com.ardafirdausr.movie_catalogue.view.activity.MovieDetailActivity;
 import com.ardafirdausr.movie_catalogue.view.adapter.MovieAdapter;
 
 import java.util.List;
@@ -70,34 +68,28 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         renderLoadingState();
         MovieApiInterface movieApi = MovieApiClient.getClient().create(MovieApiInterface.class);
         final Call<MovieList> movieListRequest = movieApi.getNowPlayingMovies(BuildConfig.MOVIE_DB_API_KEY, 1);
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        movieListRequest.enqueue(new Callback<MovieList>() {
-                            @Override
-                            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
-                                if(response.isSuccessful()){
-                                    movies = response.body().getMovies();
-                                    if(movies.size() > 0){
-                                        renderPopulatedMovieListState();
-                                    }
-                                    else {
-                                        renderEmptyMovieListState();
-                                    }
-                                }
-                                else {
-                                    renderFailedFetch();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<MovieList> call, Throwable t) {
-                                renderFailedFetch();
-                            }
-                        });
+        movieListRequest.enqueue(new Callback<MovieList>() {
+            @Override
+            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
+                if(response.isSuccessful()){
+                    movies = response.body().getMovies();
+                    if(movies.size() > 0){
+                        renderPopulatedMovieListState();
                     }
-                },
-                1200);
+                    else {
+                        renderEmptyMovieListState();
+                    }
+                }
+                else {
+                    renderFailedFetch();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieList> call, Throwable t) {
+                renderFailedFetch();
+            }
+        });
     }
 
     private void showMovieList(){
@@ -105,19 +97,24 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         movieAdapter.setMovies(movies);
         movieAdapter.setOnItemClickCallback(new MovieAdapter.OnItemClickCallback() {
             @Override
-            public void onClick(Movie movie) {
-                navigateToMovieDetail(movie);
+            public void onClick(View view, Movie movie) {
+                MoviesFragmentDirections.ActionNavigationMoviesToMovieDetailActivity toMovieDetailActivity
+                        = MoviesFragmentDirections.actionNavigationMoviesToMovieDetailActivity(movie);
+                toMovieDetailActivity.setMovie(movie);
+                Navigation.findNavController(view)
+                        .navigate(toMovieDetailActivity);
+
             }
         });
         rvMovies.setAdapter(movieAdapter);
         rvMovies.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void navigateToMovieDetail(Movie movie){
-        Intent navigateToMovieDetailIntent = new Intent(getContext(), MovieDetailActivity.class);
-        navigateToMovieDetailIntent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
-        startActivity(navigateToMovieDetailIntent);
-    }
+//    private void navigateToMovieDetail(Movie movie){
+//        Intent navigateToMovieDetailIntent = new Intent(getContext(), MovieDetailActivity.class);
+//        navigateToMovieDetailIntent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
+//        startActivity(navigateToMovieDetailIntent);
+//    }
 
     private void hideAllViews(){
         tvState.setVisibility(View.INVISIBLE);

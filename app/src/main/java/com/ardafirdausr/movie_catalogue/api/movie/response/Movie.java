@@ -5,45 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
 public class Movie implements Parcelable {
-
-    protected Movie(Parcel in) {
-        id = in.readLong();
-        title = in.readString();
-        description = in.readString();
-        vote = in.readDouble();
-        releaseDate = in.readString();
-        imageUrl = in.readString();
-    }
-
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeDouble(vote);
-        dest.writeString(releaseDate);
-        dest.writeString(imageUrl);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
     @SerializedName("id")
     private long id;
@@ -62,6 +24,47 @@ public class Movie implements Parcelable {
 
     @SerializedName("poster_path")
     private String imageUrl;
+
+    @SerializedName("backdrop_path")
+    private String coverUrl;
+
+    protected Movie(Parcel in) {
+        id = in.readLong();
+        title = in.readString();
+        description = in.readString();
+        vote = in.readDouble();
+        releaseDate = in.readString();
+        imageUrl = in.readString();
+        coverUrl = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeDouble(vote);
+        dest.writeString(releaseDate);
+        dest.writeString(imageUrl);
+        dest.writeString(coverUrl);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -109,5 +112,13 @@ public class Movie implements Parcelable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getCoverUrl() {
+        return "https://image.tmdb.org/t/p/w500" + coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 }

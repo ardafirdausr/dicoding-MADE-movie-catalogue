@@ -12,8 +12,6 @@ import com.squareup.picasso.Picasso;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MOVIE = "extra_movie";
-
     private TextView tvTitle, tvDescription, tvRating;
     private ImageView ivPoster;
 
@@ -33,10 +31,14 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void renderExtraMovie(){
-        Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
-        tvTitle.setText(movie.getTitle());
-        tvRating.setText(movie.getVote() + " / " + "10");
-        tvDescription.setText(movie.getDescription());
-        Picasso.get().load(movie.getImageUrl()).into(ivPoster);
+        Bundle intentExtra = getIntent().getExtras();
+        if(intentExtra != null){
+            Movie movie = MovieDetailActivityArgs.fromBundle(intentExtra).getMovie();
+            tvTitle.setText(movie.getTitle());
+            tvRating.setText(movie.getVote() + " / " + "10");
+            tvDescription.setText(movie.getDescription());
+            Picasso.get().load(movie.getImageUrl()).into(ivPoster);
+        }
     }
+
 }
