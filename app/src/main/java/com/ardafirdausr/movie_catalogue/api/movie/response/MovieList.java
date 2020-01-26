@@ -12,6 +12,9 @@ public class MovieList {
     @SerializedName("total_pages")
     String totalPages;
 
+    @SerializedName("results")
+    List<Movie> movies;
+
     public int getPage() {
         return page;
     }
@@ -35,8 +38,5 @@ public class MovieList {
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
-
-    @SerializedName("results")
-    List<Movie> movies;
 
 }

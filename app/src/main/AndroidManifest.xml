@@ -20,7 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.MovieDetailActivity" />
+        <activity android:name=".view.activity.MovieDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activity.MainActivity" />
+        </activity>
+        <activity android:name=".view.activity.TvShowDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

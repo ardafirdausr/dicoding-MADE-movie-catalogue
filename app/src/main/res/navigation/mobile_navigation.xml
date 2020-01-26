@@ -18,7 +18,11 @@
         android:id="@+id/navigation_tv_shows"
         android:name="com.ardafirdausr.movie_catalogue.view.fragment.TvShowsFragment"
         android:label="@string/title_tv_shows"
-        tools:layout="@layout/fragment_tv_shows" />
+        tools:layout="@layout/fragment_tv_shows" >
+        <action
+            android:id="@+id/action_navigation_tv_shows_to_tvShowDetailActivity"
+            app:destination="@id/tvShowDetailActivity" />
+    </fragment>
 
     <activity
         android:id="@+id/movieDetailActivity"
@@ -28,6 +32,15 @@
         <argument
             android:name="movie"
             app:argType="com.ardafirdausr.movie_catalogue.api.movie.response.Movie" />
+    </activity>
+    <activity
+        android:id="@+id/tvShowDetailActivity"
+        android:name="com.ardafirdausr.movie_catalogue.view.activity.TvShowDetailActivity"
+        android:label="activity_tv_show_detail"
+        tools:layout="@layout/activity_tv_show_detail" >
+        <argument
+            android:name="tvShow"
+            app:argType="com.ardafirdausr.movie_catalogue.api.movie.response.TvShow" />
     </activity>
 
 </navigation>

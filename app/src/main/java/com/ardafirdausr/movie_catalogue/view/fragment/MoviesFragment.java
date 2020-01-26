@@ -41,15 +41,12 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
     private ProgressBar pbLoading;
     private Button btRetry;
 
-    public MoviesFragment() {
-        // Required empty public constructor
-    }
+    public MoviesFragment() { }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_movies, container, false);
     }
 
