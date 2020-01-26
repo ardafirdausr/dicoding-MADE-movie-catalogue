@@ -110,12 +110,6 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         rvMovies.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-//    private void navigateToMovieDetail(Movie movie){
-//        Intent navigateToMovieDetailIntent = new Intent(getContext(), MovieDetailActivity.class);
-//        navigateToMovieDetailIntent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
-//        startActivity(navigateToMovieDetailIntent);
-//    }
-
     private void hideAllViews(){
         tvState.setVisibility(View.INVISIBLE);
         rvMovies.setVisibility(View.INVISIBLE);

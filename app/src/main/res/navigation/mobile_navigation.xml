@@ -9,7 +9,9 @@
         android:name="com.ardafirdausr.movie_catalogue.view.fragment.MoviesFragment"
         android:label="@string/title_movies"
         tools:layout="@layout/fragment_movies">
-        <action app:destination="@id/movieDetailActivity" />
+        <action
+            android:id="@+id/action_navigation_movies_to_movieDetailActivity"
+            app:destination="@id/movieDetailActivity" />
     </fragment>
 
     <fragment

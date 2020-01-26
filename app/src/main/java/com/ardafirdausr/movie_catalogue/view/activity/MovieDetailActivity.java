@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    private TextView tvTitle, tvDescription, tvRating;
+    private TextView tvTitle, tvDescription, tvRating, tvReleaseDate;
     private ImageView ivPoster;
 
     @Override
@@ -25,6 +25,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void bindView(){
         tvTitle = findViewById(R.id.tv_title);
+        tvReleaseDate = findViewById(R.id.tv_release_date);
         tvRating = findViewById(R.id.tv_rating);
         tvDescription = findViewById(R.id.tv_description);
         ivPoster = findViewById(R.id.iv_poster);
@@ -35,7 +36,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         if(intentExtra != null){
             Movie movie = MovieDetailActivityArgs.fromBundle(intentExtra).getMovie();
             tvTitle.setText(movie.getTitle());
-            tvRating.setText(movie.getVote() + " / " + "10");
+            tvReleaseDate.setText(movie.getReleaseDate());
+            tvRating.setText(Double.toString(movie.getVote()));
             tvDescription.setText(movie.getDescription());
             Picasso.get().load(movie.getImageUrl()).into(ivPoster);
         }

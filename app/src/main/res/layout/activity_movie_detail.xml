@@ -16,83 +16,63 @@
             android:layout_height="160dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:src="@drawable/ic_launcher_background"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/placeholder" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/title"
-            android:textColor="#a6a6a6"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toEndOf="@id/iv_poster"
-            app:layout_constraintTop_toTopOf="@id/iv_poster" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/roboto_medium"
             android:lineSpacingExtra="8sp"
             android:text="@string/placeholder"
             android:textColor="#3f3f3f"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:typeface="sans"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintStart_toEndOf="@+id/iv_poster"
+            app:layout_constraintTop_toTopOf="@+id/iv_poster" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_description_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/description"
+            android:fontFamily="@font/roboto_medium"
             android:textColor="#a6a6a6"
             android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/iv_poster"
             app:layout_constraintTop_toBottomOf="@id/iv_poster" />
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
+            android:id="@+id/tv_rating_title"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/rating"
             android:textColor="#a6a6a6"
             android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            app:layout_constraintEnd_toEndOf="@+id/tv_release_date_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_release_date_title" />
 
         <TextView
-            android:id="@+id/tv_rating"
-            android:layout_width="0dp"
+            android:id="@+id/tv_release_date_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/placeholder"
-            android:textColor="#3f3f3f"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@id/textView" />
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/release_date"
+            android:textColor="#a6a6a6"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
 
         <TextView
             android:id="@+id/tv_description"
@@ -101,6 +81,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
+            android:fontFamily="@font/roboto_medium"
             android:lineSpacingExtra="8sp"
             android:text="@string/placeholder"
             android:textAlignment="viewStart"
@@ -110,7 +91,61 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/iv_poster"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_description_title" />
+
+        <TextView
+            android:id="@+id/tv_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/release_date"
+            android:textColor="#3f3f3f"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_release_date_title"
+            app:layout_constraintStart_toEndOf="@+id/tv_release_date_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_release_date_title" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_rounded_corner_primary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_rating_title"
+            app:layout_constraintStart_toEndOf="@+id/tv_rating_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_rating_title">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="2dp"
+                android:contentDescription="@string/rating"
+                app:srcCompat="@drawable/ic_star_orange_24dp"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="4dp" />
+
+            <TextView
+                android:id="@+id/tv_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/rating"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_medium"
+                tools:layout_editor_absoluteX="40dp"
+                tools:layout_editor_absoluteY="4dp" />
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
