@@ -19,7 +19,8 @@
             tools:srcCompat="@tools:sample/backgrounds/scenic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/placeholder" />
+            android:contentDescription="@string/placeholder"
+            android:background="@drawable/bg_rounded_corner_white" />
 
         <TextView
             android:id="@+id/tv_title"

@@ -23,10 +23,10 @@ import com.ardafirdausr.movie_catalogue.api.movie.MovieApiClient;
 import com.ardafirdausr.movie_catalogue.api.movie.MovieApiInterface;
 import com.ardafirdausr.movie_catalogue.api.movie.response.TvShow;
 import com.ardafirdausr.movie_catalogue.api.movie.response.TvShowList;
-import com.ardafirdausr.movie_catalogue.view.adapter.MovieAdapter;
 import com.ardafirdausr.movie_catalogue.view.adapter.TvShowAdapter;
 
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,10 +63,20 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
         fetchNowPlayingMovies();
     }
 
+    private String getCurrentLanguage(){
+        String countryCode = Locale.getDefault().getCountry();
+        String languageCode = Locale.getDefault().getLanguage();
+        languageCode = languageCode.equals("in") ? "id" : languageCode;
+        return languageCode + "-" + countryCode;
+    }
+
     private void fetchNowPlayingMovies(){
         renderLoadingState();
+        String apiKey = BuildConfig.MOVIE_DB_API_KEY;
+        String language = getCurrentLanguage();
+        int page = 1;
         MovieApiInterface movieApi = MovieApiClient.getClient().create(MovieApiInterface.class);
-        final Call<TvShowList> tvShowListRequest = movieApi.getTvOnTheAir(BuildConfig.MOVIE_DB_API_KEY, 1);
+        final Call<TvShowList> tvShowListRequest = movieApi.getTvOnTheAir(apiKey, language, page);
         tvShowListRequest.enqueue(new Callback<TvShowList>() {
             @Override
             public void onResponse(Call<TvShowList> call, Response<TvShowList> response) {

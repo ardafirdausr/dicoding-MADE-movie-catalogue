@@ -2,14 +2,18 @@ package com.ardafirdausr.movie_catalogue.view.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.api.movie.response.TvShow;
 import com.squareup.picasso.Picasso;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class TvShowDetailActivity extends AppCompatActivity {
 
@@ -49,7 +53,21 @@ public class TvShowDetailActivity extends AppCompatActivity {
             tvReleaseDate.setText(tvShow.getFirstAirDate());
             tvRating.setText(Double.toString(tvShow.getVote()));
             tvDescription.setText(tvShow.getDescription());
-            Picasso.get().load(tvShow.getImageUrl()).into(ivPoster);
+            Picasso.get()
+                    .load(tvShow.getImageUrl())
+                    .resize(120, 160)
+                    .transform(new RoundedCornersTransformation(10, 0))
+                    .into(ivPoster);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

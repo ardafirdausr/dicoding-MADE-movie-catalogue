@@ -25,6 +25,7 @@ import com.ardafirdausr.movie_catalogue.api.movie.response.MovieList;
 import com.ardafirdausr.movie_catalogue.view.adapter.MovieAdapter;
 
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,10 +62,20 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         fetchNowPlayingMovies();
     }
 
+    private String getCurrentLanguage(){
+        String countryCode = Locale.getDefault().getCountry();
+        String languageCode = Locale.getDefault().getLanguage();
+        languageCode = languageCode.equals("in") ? "id" : languageCode;
+        return languageCode + "-" + countryCode;
+    }
+
     private void fetchNowPlayingMovies(){
         renderLoadingState();
         MovieApiInterface movieApi = MovieApiClient.getClient().create(MovieApiInterface.class);
-        final Call<MovieList> movieListRequest = movieApi.getNowPlayingMovies(BuildConfig.MOVIE_DB_API_KEY, 1);
+        String apiKey = BuildConfig.MOVIE_DB_API_KEY;
+        String language = getCurrentLanguage();
+        int page = 1;
+        final Call<MovieList> movieListRequest = movieApi.getNowPlayingMovies(apiKey, language, page);
         movieListRequest.enqueue(new Callback<MovieList>() {
             @Override
             public void onResponse(Call<MovieList> call, Response<MovieList> response) {
