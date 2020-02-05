@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.view.activity;
+package com.ardafirdausr.movie_catalogue.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.view.activity;
+package com.ardafirdausr.movie_catalogue.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.view.fragment;
+package com.ardafirdausr.movie_catalogue.fragment;
 
 
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import com.ardafirdausr.movie_catalogue.api.movie.MovieApiClient;
 import com.ardafirdausr.movie_catalogue.api.movie.MovieApiInterface;
 import com.ardafirdausr.movie_catalogue.api.movie.response.TvShow;
 import com.ardafirdausr.movie_catalogue.api.movie.response.TvShowList;
-import com.ardafirdausr.movie_catalogue.view.adapter.TvShowAdapter;
+import com.ardafirdausr.movie_catalogue.adapter.TvShowAdapter;
 
 import java.util.List;
 import java.util.Locale;

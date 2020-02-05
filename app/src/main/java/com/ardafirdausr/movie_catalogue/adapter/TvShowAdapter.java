@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.view.adapter;
+package com.ardafirdausr.movie_catalogue.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ardafirdausr.movie_catalogue.R;
-import com.ardafirdausr.movie_catalogue.api.movie.response.Movie;
+import com.ardafirdausr.movie_catalogue.api.movie.response.TvShow;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,29 +18,29 @@ import java.util.List;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
 
-    private List<Movie> movies = new ArrayList<>();
-    private OnItemClickCallback onItemClickCallback;
+    private List<TvShow> tvShows = new ArrayList<>();
+    private TvShowAdapter.OnItemClickCallback onItemClickCallback;
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
+    public void setTvShows(List<TvShow> tvShows) {
+        this.tvShows = tvShows;
     }
 
-    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+    public void setOnItemClickCallback(TvShowAdapter.OnItemClickCallback onItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_list, parent, false);
-        return new ViewHolder(view);
+    public TvShowAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tv_show_list, parent, false);
+        return new TvShowAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Movie movie = movies.get(position);
+    public void onBindViewHolder(@NonNull TvShowAdapter.ViewHolder holder, int position) {
+        final TvShow movie = tvShows.get(position);
         holder.bind(movie);
         holder.vgListitem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,11 +52,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return tvShows.size();
     }
 
     public interface OnItemClickCallback {
-        void onClick(View view, Movie movie);
+        void onClick(View view, TvShow movie);
     }
 
 
@@ -75,13 +75,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             ivPoster = itemView.findViewById(R.id.iv_poster);
         }
 
-        void bind(Movie movie) {
-            tvTitle.setText(movie.getTitle());
-            tvRating.setText(Double.toString(movie.getVote()));
-            tvDescription.setText(movie.getDescription());
-            tvReleaseDate.setText(movie.getReleaseDate());
+        void bind(TvShow tvShow) {
+            tvTitle.setText(tvShow.getTitle());
+            tvRating.setText(Double.toString(tvShow.getVote()));
+            tvDescription.setText(tvShow.getDescription());
+            tvReleaseDate.setText(tvShow.getFirstAirDate());
             Picasso.get()
-                    .load(movie.getImageUrl())
+                    .load(tvShow.getImageUrl())
                     .resize(90, 120)
                     .transform(new RoundedCornersTransformation(10, 0))
                     .into(ivPoster);
