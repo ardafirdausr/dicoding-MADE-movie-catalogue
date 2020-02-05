@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movie Catalogue</string>
+    <string name="placeholder">Lorem Ipsum Dolor</string>
+    <string name="loading">Loading...</string>
+    <string name="fetch_data_failed">Gagal mengambil data</string>
+    <string name="retry">Coba lagi</string>
+    <string name="no_data_displayed">Tidak ada data yang ditampilkan</string>
+    <string name="title">Judul</string>
+    <string name="description">Deskripsi</string>
+    <string name="rating">Rating</string>
+    <string name="release_date">Tanggal Rilis</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_movies">Film</string>
+    <string name="title_tv_shows">Serial Tv</string>
+    <string name="change_language_settings">Ubah bahasa</string>
+</resources>

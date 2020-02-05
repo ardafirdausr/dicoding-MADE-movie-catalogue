@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ardafirdausr.movie_catalogue.R;
-import com.ardafirdausr.movie_catalogue.api.movie.response.Movie;
+import com.ardafirdausr.movie_catalogue.api.movie.response.TvShow;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class TvShowDetailActivity extends AppCompatActivity {
 
     private ActionBar actionBar;
     private TextView tvTitle, tvDescription, tvRating, tvReleaseDate;
@@ -24,7 +24,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detail);
+        setContentView(R.layout.activity_tv_show_detail);
         setUpActionBar();
         bindView();
         renderExtraMovie();
@@ -47,14 +47,14 @@ public class MovieDetailActivity extends AppCompatActivity {
     private void renderExtraMovie(){
         Bundle intentExtra = getIntent().getExtras();
         if(intentExtra != null){
-            Movie movie = MovieDetailActivityArgs.fromBundle(intentExtra).getMovie();
-            tvTitle.setText(movie.getTitle());
-            actionBar.setTitle(movie.getTitle());
-            tvReleaseDate.setText(movie.getReleaseDate());
-            tvRating.setText(Double.toString(movie.getVote()));
-            tvDescription.setText(movie.getDescription());
+            TvShow tvShow = TvShowDetailActivityArgs.fromBundle(intentExtra).getTvShow();
+            tvTitle.setText(tvShow.getTitle());
+            actionBar.setTitle(tvShow.getTitle());
+            tvReleaseDate.setText(tvShow.getFirstAirDate());
+            tvRating.setText(Double.toString(tvShow.getVote()));
+            tvDescription.setText(tvShow.getDescription());
             Picasso.get()
-                    .load(movie.getImageUrl())
+                    .load(tvShow.getImageUrl())
                     .resize(120, 160)
                     .transform(new RoundedCornersTransformation(10, 0))
                     .into(ivPoster);
@@ -70,5 +70,4 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

@@ -5,22 +5,22 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Movie implements Parcelable {
+public class TvShow  implements Parcelable {
 
     @SerializedName("id")
-    private long id;
+    private Long id;
 
-    @SerializedName("title")
+    @SerializedName("name")
     private String title;
 
     @SerializedName("overview")
     private String description;
 
-    @SerializedName("vote_average")
-    private double vote;
+    @SerializedName("first_air_date")
+    private String firstAirDate;
 
-    @SerializedName("release_date")
-    private String releaseDate;
+    @SerializedName("vote_average")
+    private Double vote;
 
     @SerializedName("poster_path")
     private String imageUrl;
@@ -28,23 +28,41 @@ public class Movie implements Parcelable {
     @SerializedName("backdrop_path")
     private String coverUrl;
 
-    protected Movie(Parcel in) {
-        id = in.readLong();
+    protected TvShow(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
         title = in.readString();
         description = in.readString();
-        vote = in.readDouble();
-        releaseDate = in.readString();
+        firstAirDate = in.readString();
+        if (in.readByte() == 0) {
+            vote = null;
+        } else {
+            vote = in.readDouble();
+        }
         imageUrl = in.readString();
         coverUrl = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeDouble(vote);
-        dest.writeString(releaseDate);
+        dest.writeString(firstAirDate);
+        if (vote == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(vote);
+        }
         dest.writeString(imageUrl);
         dest.writeString(coverUrl);
     }
@@ -54,23 +72,23 @@ public class Movie implements Parcelable {
         return 0;
     }
 
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+    public static final Creator<TvShow> CREATOR = new Creator<TvShow>() {
         @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
+        public TvShow createFromParcel(Parcel in) {
+            return new TvShow(in);
         }
 
         @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
+        public TvShow[] newArray(int size) {
+            return new TvShow[size];
         }
     };
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -90,20 +108,20 @@ public class Movie implements Parcelable {
         this.description = description;
     }
 
-    public double getVote() {
+    public String getFirstAirDate() {
+        return firstAirDate;
+    }
+
+    public void setFirstAirDate(String firstAirDate) {
+        this.firstAirDate = firstAirDate;
+    }
+
+    public Double getVote() {
         return vote;
     }
 
-    public void setVote(double vote) {
+    public void setVote(Double vote) {
         this.vote = vote;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public String getImageUrl() {
