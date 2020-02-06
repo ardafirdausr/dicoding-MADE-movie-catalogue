@@ -2,17 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/navigation_movies">
-
-    <fragment
-        android:id="@+id/navigation_movies"
-        android:name="com.ardafirdausr.movie_catalogue.fragment.MoviesFragment"
-        android:label="@string/title_movies"
-        tools:layout="@layout/fragment_movies">
-        <action
-            android:id="@+id/action_navigation_movies_to_movieDetailActivity"
-            app:destination="@id/movieDetailActivity" />
-    </fragment>
+    app:startDestination="@id/navigation_movies">
 
     <fragment
         android:id="@+id/navigation_tv_shows"
@@ -42,5 +32,14 @@
             android:name="tvShow"
             app:argType="com.ardafirdausr.movie_catalogue.api.movie.response.TvShow" />
     </activity>
+    <fragment
+        android:id="@+id/navigation_movies"
+        android:name="com.ardafirdausr.movie_catalogue.fragment.movie.MoviesFragment"
+        android:label="@string/title_movies"
+        tools:layout="@layout/fragment_movies">
+        <action
+            android:id="@+id/action_moviesFragment_to_movieDetailActivity"
+            app:destination="@+id/movieDetailActivity" />
+    </fragment>
 
 </navigation>

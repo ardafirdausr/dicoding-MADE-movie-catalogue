@@ -20,11 +20,16 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private List<Movie> movies = new ArrayList<>();
+    private List<Movie> movies;
     private OnItemClickCallback onItemClickCallback;
 
+    public MovieAdapter() {
+        this.movies = new ArrayList<>();
+    }
+
     public void setMovies(List<Movie> movies) {
-        this.movies = movies;
+        this.movies.clear();
+        this.movies.addAll(movies);
     }
 
     public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
@@ -58,7 +63,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public interface OnItemClickCallback {
         void onClick(View view, Movie movie);
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ViewGroup vgListitem;
