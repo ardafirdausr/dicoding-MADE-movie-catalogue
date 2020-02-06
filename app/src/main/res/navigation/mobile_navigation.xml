@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navigation_tv_shows"
-        android:name="com.ardafirdausr.movie_catalogue.fragment.TvShowsFragment"
+        android:name="com.ardafirdausr.movie_catalogue.fragment.tvshow.TvShowsFragment"
         android:label="@string/title_tv_shows"
         tools:layout="@layout/fragment_tv_shows" >
         <action

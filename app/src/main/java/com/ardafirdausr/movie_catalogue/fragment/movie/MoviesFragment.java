@@ -21,6 +21,7 @@ import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.adapter.MovieAdapter;
 import com.ardafirdausr.movie_catalogue.api.movie.response.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,7 +94,7 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         moviesViewModel.getIsFetchingSuccess().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isFetchSuccess) {
-                if(isFetchSuccess) showMoviesList(moviesViewModel.getMovies().getValue());
+                if(isFetchSuccess) showMoviesList();
                 else showRetryButton(moviesViewModel.getMessage().getValue());
             }
         });
@@ -131,7 +132,7 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         pbLoading.setVisibility(View.VISIBLE);
     }
 
-    private void showMoviesList(List<Movie> movies){
+    private void showMoviesList(){
         hideAllViews();
         rvMovies.setVisibility(View.VISIBLE);
     }
