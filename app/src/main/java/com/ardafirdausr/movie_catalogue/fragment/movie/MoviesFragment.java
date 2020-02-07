@@ -21,7 +21,6 @@ import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.adapter.MovieAdapter;
 import com.ardafirdausr.movie_catalogue.api.movie.response.Movie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -146,10 +145,8 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.bt_retry:
-                moviesViewModel.initFetchMovies();
-                break;
+        if(v.getId() == R.id.bt_retry){
+            moviesViewModel.initFetchMovies();
         }
     }
 }

@@ -39,8 +39,7 @@ public class TvShowsViewModel extends ViewModel {
 
     public void initFetchMovies(){
         if(tvShows.getValue().isEmpty()){
-            // change this string to resource string
-            message.postValue("Loading...");
+            message.setValue("Loading...");
             isFetchingData.postValue(true);
 
             String apiKey = BuildConfig.MOVIE_DB_API_KEY;
@@ -56,12 +55,11 @@ public class TvShowsViewModel extends ViewModel {
                     isFetchingData.postValue(false);
                     if (response.body() != null) {
                         isFetchingSuccess.postValue(true);
-                        getTvShows().postValue((ArrayList) response.body().getTvShows());
-                        message.postValue("");
+                        getTvShows().postValue((ArrayList<TvShow>) response.body().getTvShows());
+                        message.setValue("");
                     } else {
                         isFetchingSuccess.postValue(false);
-                        // change this string to resource string
-                        message.postValue("Movies are not available");
+                        message.setValue("Tv shows are not available");
                     }
                 }
 
@@ -69,8 +67,7 @@ public class TvShowsViewModel extends ViewModel {
                 public void onFailure(Call<TvShowList> call, Throwable t) {
                     isFetchingData.postValue(false);
                     isFetchingSuccess.postValue(false);
-                    // change this string to resource string
-                    message.postValue("Failed load data");
+                    message.setValue("Failed load data");
                 }
 
             });

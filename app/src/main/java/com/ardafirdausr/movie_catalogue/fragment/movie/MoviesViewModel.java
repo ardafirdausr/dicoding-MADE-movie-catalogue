@@ -41,8 +41,7 @@ public class MoviesViewModel extends ViewModel {
 
     public void initFetchMovies(){
         if(movies.getValue().isEmpty()){
-            // change this string to resource string
-            message.postValue("Loading...");
+            message.setValue("Loading...");
             isFetchingData.postValue(true);
 
             String apiKey = BuildConfig.MOVIE_DB_API_KEY;
@@ -58,12 +57,11 @@ public class MoviesViewModel extends ViewModel {
                     isFetchingData.postValue(false);
                     if (response.body() != null) {
                         isFetchingSuccess.postValue(true);
-                        movies.postValue((ArrayList) response.body().getMovies());
-                        message.postValue("");
+                        movies.postValue((ArrayList<Movie>) response.body().getMovies());
+                        message.setValue("");
                     } else {
                         isFetchingSuccess.postValue(false);
-                        // change this string to resource string
-                        message.postValue("Movies are not available");
+                        message.setValue("Movies are not available");
                     }
                 }
 
@@ -71,8 +69,7 @@ public class MoviesViewModel extends ViewModel {
                 public void onFailure(Call<MovieList> call, Throwable t) {
                     isFetchingData.postValue(false);
                     isFetchingSuccess.postValue(false);
-                    // change this string to resource string
-                    message.postValue("Failed load data");
+                    message.setValue("Failed load data");
                 }
 
             });

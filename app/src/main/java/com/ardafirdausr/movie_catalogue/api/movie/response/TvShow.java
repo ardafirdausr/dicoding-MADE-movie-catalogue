@@ -28,7 +28,7 @@ public class TvShow  implements Parcelable {
     @SerializedName("backdrop_path")
     private String coverUrl;
 
-    protected TvShow(Parcel in) {
+    private TvShow(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
         } else {

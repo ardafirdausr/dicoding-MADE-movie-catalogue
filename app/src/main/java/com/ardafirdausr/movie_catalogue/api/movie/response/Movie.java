@@ -28,7 +28,7 @@ public class Movie implements Parcelable {
     @SerializedName("backdrop_path")
     private String coverUrl;
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         id = in.readLong();
         title = in.readString();
         description = in.readString();
