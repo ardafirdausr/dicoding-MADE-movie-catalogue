@@ -80,31 +80,16 @@ public class MoviesViewModel extends ViewModel {
         return movies;
     }
 
-    public void setMovies(MutableLiveData<ArrayList<Movie>> movies) {
-        this.movies = movies;
-    }
-
     public MutableLiveData<Boolean> getIsFetchingData() {
         return isFetchingData;
-    }
-
-    public void setIsFetchingData(MutableLiveData<Boolean> isFetchingData) {
-        this.isFetchingData = isFetchingData;
     }
 
     public MutableLiveData<Boolean> getIsFetchingSuccess() {
         return isFetchingSuccess;
     }
 
-    public void setIsFetchingSuccess(MutableLiveData<Boolean> isFetchingSuccess) {
-        this.isFetchingSuccess = isFetchingSuccess;
-    }
-
     public MutableLiveData<String> getMessage() {
         return message;
     }
 
-    public void setMessage(MutableLiveData<String> message) {
-        this.message = message;
-    }
 }

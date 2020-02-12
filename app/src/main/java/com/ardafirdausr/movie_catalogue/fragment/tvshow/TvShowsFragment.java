@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.api.movie.response.TvShow;
 import com.ardafirdausr.movie_catalogue.adapter.TvShowAdapter;
-import com.ardafirdausr.movie_catalogue.api.movie.response.TvShowList;
 
 import java.util.List;
 
@@ -31,7 +30,6 @@ import java.util.List;
  */
 public class TvShowsFragment extends Fragment implements View.OnClickListener{
 
-    private List<TvShow> tvShows;
     private RecyclerView rvTvShows;
     private TextView tvState;
     private ProgressBar pbLoading;
@@ -148,29 +146,7 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.bt_retry:
-                tvShowsViewModel.initFetchMovies();
-                break;
-        }
-    }
-
-    private void showTvShowList(){
-        TvShowAdapter tvShowAdapater = new TvShowAdapter();
-        tvShowAdapater.setTvShows(tvShows);
-        tvShowAdapater.setOnItemClickCallback(new TvShowAdapter.OnItemClickCallback() {
-            @Override
-            public void onClick(View view, TvShow tvShow) {
-                TvShowsFragmentDirections.ActionNavigationTvShowsToTvShowDetailActivity toTvShowDetailActivity
-                        = TvShowsFragmentDirections.actionNavigationTvShowsToTvShowDetailActivity(tvShow);
-                toTvShowDetailActivity.setTvShow(tvShow);
-                Navigation.findNavController(view)
-                        .navigate(toTvShowDetailActivity);
-
-            }
-        });
-        rvTvShows.setAdapter(tvShowAdapater);
-        rvTvShows.setLayoutManager(new LinearLayoutManager(getContext()));
+        if(v.getId() == R.id.bt_retry) tvShowsViewModel.initFetchMovies();
     }
 
 }
