@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,15 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.MovieDetailActivity">
+        <activity android:name=".activity.MovieDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
-        <activity android:name=".view.activity.TvShowDetailActivity">
+        <activity android:name=".activity.TvShowDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
     </application>
 

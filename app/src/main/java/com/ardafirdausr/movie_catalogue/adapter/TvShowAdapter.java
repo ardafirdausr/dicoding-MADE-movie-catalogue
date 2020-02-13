@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.view.adapter;
+package com.ardafirdausr.movie_catalogue.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

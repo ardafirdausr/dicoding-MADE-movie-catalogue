@@ -2,21 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/navigation_movies">
-
-    <fragment
-        android:id="@+id/navigation_movies"
-        android:name="com.ardafirdausr.movie_catalogue.view.fragment.MoviesFragment"
-        android:label="@string/title_movies"
-        tools:layout="@layout/fragment_movies">
-        <action
-            android:id="@+id/action_navigation_movies_to_movieDetailActivity"
-            app:destination="@id/movieDetailActivity" />
-    </fragment>
+    app:startDestination="@id/navigation_movies">
 
     <fragment
         android:id="@+id/navigation_tv_shows"
-        android:name="com.ardafirdausr.movie_catalogue.view.fragment.TvShowsFragment"
+        android:name="com.ardafirdausr.movie_catalogue.fragment.tvshow.TvShowsFragment"
         android:label="@string/title_tv_shows"
         tools:layout="@layout/fragment_tv_shows" >
         <action
@@ -26,7 +16,7 @@
 
     <activity
         android:id="@+id/movieDetailActivity"
-        android:name="com.ardafirdausr.movie_catalogue.view.activity.MovieDetailActivity"
+        android:name="com.ardafirdausr.movie_catalogue.activity.MovieDetailActivity"
         android:label="activity_movie_detail"
         tools:layout="@layout/activity_movie_detail" >
         <argument
@@ -35,12 +25,21 @@
     </activity>
     <activity
         android:id="@+id/tvShowDetailActivity"
-        android:name="com.ardafirdausr.movie_catalogue.view.activity.TvShowDetailActivity"
+        android:name="com.ardafirdausr.movie_catalogue.activity.TvShowDetailActivity"
         android:label="activity_tv_show_detail"
         tools:layout="@layout/activity_tv_show_detail" >
         <argument
             android:name="tvShow"
             app:argType="com.ardafirdausr.movie_catalogue.api.movie.response.TvShow" />
     </activity>
+    <fragment
+        android:id="@+id/navigation_movies"
+        android:name="com.ardafirdausr.movie_catalogue.fragment.movie.MoviesFragment"
+        android:label="@string/title_movies"
+        tools:layout="@layout/fragment_movies">
+        <action
+            android:id="@+id/action_moviesFragment_to_movieDetailActivity"
+            app:destination="@+id/movieDetailActivity" />
+    </fragment>
 
 </navigation>

@@ -1,7 +1,5 @@
 package com.ardafirdausr.movie_catalogue.api.movie;
 
-import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -9,9 +7,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieApiClient {
 
-    public static final int API_VERSION = 3;
+    private static final int API_VERSION = 3;
 
-    public static final String BASE_URL = "https://api.themoviedb.org/" + API_VERSION + "/";
+    private static final String BASE_URL = "https://api.themoviedb.org/" + API_VERSION + "/";
 
     private static Retrofit retrofit = null;
 

@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.view.activity;
+package com.ardafirdausr.movie_catalogue.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +32,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void setUpActionBar(){
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if(actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -63,10 +63,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
