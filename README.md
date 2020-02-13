@@ -1,5 +1,5 @@
 # Movie Catalogue
-__Movie Catalogoue__ adalah sebuah app yang menampilkan daftar movie terbaru dan juga detailnya. App ini ditujukan untuk memenuhi submission 2 pada course Menjadi Android Developer Expert dari [dicoding](https://www.dicoding.com/academies/14)
+__Movie Catalogoue__ adalah sebuah app yang menampilkan daftar movie terbaru dan juga detailnya. App ini ditujukan untuk memenuhi submission 3 pada course Menjadi Android Developer Expert dari [dicoding](https://www.dicoding.com/academies/14)
 
 
 ## Preview
