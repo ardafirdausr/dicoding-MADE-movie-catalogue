@@ -9,12 +9,14 @@ __Movie Catalogoue__ adalah sebuah app yang menampilkan daftar movie terbaru dan
 1. Daftar Film
    - [x] Terdapat 2 (dua) halaman yang menampilkan daftar film (Movies dan Tv Show).
    - [x] Menggunakan Fragment untuk menampung halaman Movies dan Tv Show.
-   - [x] Menggunakan RecyclerView untuk menampilkan daftar film dengan jumlah minimal 10 item.
-   - [x] Menggunakan TabLayout, BottomNavigationView, atau yang lainnya sebagai navigasi antara halaman Movies dan Tv Show.
+   - [x] Menggunakan RecyclerView untuk menampilkan daftar film.
+   - [x] Menggunakan BottomNavigationView, TabLayout, atau yang lainnya sebagai navigasi antara halaman Movies dan Tv Show.
+   - [x] Menampilkan indikator loading ketika data sedang dimuat.
 2. Detail Film
    - [x] Menampilkan poster dan informasi film pada halaman detail film.
-   - [x] Menggunakan Parcelable sebagai interfaces dari obyek yang akan dikirimkan antar Activity atau Fragment.
    - [x] Menggunakan ConstraintLayout untuk menyusun layout.
+   - [x] Menampilkan indikator loading ketika data sedang dimuat.
 3. Localization
    - [x] Aplikasi harus mendukung bahasa Indonesia dan bahasa Inggris.
-
+4. Configuration Changes
+   - [x] Aplikasi harus bisa menjaga data yang sudah dimuat ketika terjadi pergantian orientasi dari potrait ke landscape atau sebaliknya.
