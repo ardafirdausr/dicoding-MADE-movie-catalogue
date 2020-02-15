@@ -1,6 +1,6 @@
-package com.ardafirdausr.movie_catalogue.fragment.tvshow;
+package com.ardafirdausr.movie_catalogue.ui.fragment.tvshow;
 
-
+import android.app.Application;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,8 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ardafirdausr.movie_catalogue.R;
-import com.ardafirdausr.movie_catalogue.api.movie.response.TvShow;
-import com.ardafirdausr.movie_catalogue.adapter.TvShowAdapter;
+import com.ardafirdausr.movie_catalogue.repository.local.entity.TvShow;
+import com.ardafirdausr.movie_catalogue.ui.adapter.TvShowAdapter;
 
 import java.util.List;
 
@@ -49,8 +49,6 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
         initViewModel();
-        registerObserver();
-        tvShowsViewModel.initFetchMovies();
     }
 
     private void bindView(View view){
@@ -62,18 +60,28 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initViewModel(){
-        this.tvShowsViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
-                .get(TvShowsViewModel.class);
+        Application application = null;
+        if(getActivity() != null){
+            application = getActivity().getApplication();
+        }
+        if(application != null){
+            tvShowsViewModel = new ViewModelProvider(
+                    this,
+                    new TvShowsViewModel.Factory(application))
+                    .get(TvShowsViewModel.class);
+            registerObserver();
+            tvShowsViewModel.fetchingTvShows();
+        }
     }
 
     private void registerObserver(){
         observeMovies();
-        observeIsFetchData();
-        observeIsFetchSuccess();
+        observeFetchingDataStatus();
+        observeMessage();
     }
 
     private void observeMovies(){
-        tvShowsViewModel.getTvShows().observe(this, new Observer<List<TvShow>>() {
+        tvShowsViewModel.getTvShows().observe(getViewLifecycleOwner(), new Observer<List<TvShow>>() {
             @Override
             public void onChanged(List<TvShow> tvShows) {
                 renderTvShowList(tvShows);
@@ -81,21 +89,31 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
         });
     }
 
-    private void observeIsFetchData(){
-        tvShowsViewModel.getIsFetchingData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isFetchingData) {
-                if(isFetchingData) showLoadingState(tvShowsViewModel.getMessage().getValue());
-            }
-        });
+    private void observeFetchingDataStatus(){
+        tvShowsViewModel.getFetchingDataStatus().observe(
+                getViewLifecycleOwner(),
+                new Observer<TvShowsViewModel.FetchingStatus>() {
+                    @Override
+                    public void onChanged(TvShowsViewModel.FetchingStatus fetchingStatus) {
+                        if(fetchingStatus == TvShowsViewModel.FetchingStatus.LOADING){
+                            showLoadingState();
+                        }
+                        else if(fetchingStatus == TvShowsViewModel.FetchingStatus.SUCCESS){
+                            showMoviesList();
+                        }
+                        else if(fetchingStatus == TvShowsViewModel.FetchingStatus.FAILED){
+                            showRetryButton();
+                        }
+                    }
+                }
+        );
     }
 
-    private void observeIsFetchSuccess(){
-        tvShowsViewModel.getIsFetchingSuccess().observe(this, new Observer<Boolean>() {
+    private void observeMessage(){
+        tvShowsViewModel.getMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onChanged(Boolean isFetchSuccess) {
-                if(isFetchSuccess) showMoviesList();
-                else showRetryButton(tvShowsViewModel.getMessage().getValue());
+            public void onChanged(String message) {
+                tvState.setText(message);
             }
         });
     }
@@ -107,8 +125,8 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view, TvShow tvShow) {
                 TvShowsFragmentDirections.ActionNavigationTvShowsToTvShowDetailActivity toTvShowDetailActivity
-                        = TvShowsFragmentDirections.actionNavigationTvShowsToTvShowDetailActivity(tvShow);
-                toTvShowDetailActivity.setTvShow(tvShow);
+                        = TvShowsFragmentDirections.actionNavigationTvShowsToTvShowDetailActivity(tvShow.getId());
+                toTvShowDetailActivity.setTvShowId(tvShow.getId());
                 Navigation.findNavController(view)
                         .navigate(toTvShowDetailActivity);
 
@@ -125,9 +143,8 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
         btRetry.setVisibility(View.INVISIBLE);
     }
 
-    private void showLoadingState(String message){
+    private void showLoadingState(){
         hideAllViews();
-        tvState.setText(message);
         tvState.setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.VISIBLE);
     }
@@ -137,16 +154,17 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
         rvTvShows.setVisibility(View.VISIBLE);
     }
 
-    private void showRetryButton(String message){
+    private void showRetryButton(){
         hideAllViews();
-        tvState.setText(message);
         tvState.setVisibility(View.VISIBLE);
         btRetry.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.bt_retry) tvShowsViewModel.initFetchMovies();
+        if(v.getId() == R.id.bt_retry){
+            tvShowsViewModel.fetchingTvShows();
+        }
     }
 
 }

@@ -1,11 +1,11 @@
-package com.ardafirdausr.movie_catalogue.api.movie.response;
+package com.ardafirdausr.movie_catalogue.repository.remote.movie.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Movie implements Parcelable {
+public class MovieResponse implements Parcelable {
 
     @SerializedName("id")
     private long id;
@@ -28,7 +28,7 @@ public class Movie implements Parcelable {
     @SerializedName("backdrop_path")
     private String coverUrl;
 
-    private Movie(Parcel in) {
+    private MovieResponse(Parcel in) {
         id = in.readLong();
         title = in.readString();
         description = in.readString();
@@ -54,15 +54,15 @@ public class Movie implements Parcelable {
         return 0;
     }
 
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+    public static final Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
         @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
+        public MovieResponse createFromParcel(Parcel in) {
+            return new MovieResponse(in);
         }
 
         @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
+        public MovieResponse[] newArray(int size) {
+            return new MovieResponse[size];
         }
     };
 
@@ -78,47 +78,24 @@ public class Movie implements Parcelable {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public double getVote() {
         return vote;
     }
 
-    public void setVote(double vote) {
-        this.vote = vote;
-    }
-
     public String getReleaseDate() {
         return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public String getImageUrl() {
         return "https://image.tmdb.org/t/p/w500" + imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public String getCoverUrl() {
         return "https://image.tmdb.org/t/p/w500" + coverUrl;
     }
 
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
-    }
 }

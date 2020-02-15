@@ -1,5 +1,6 @@
-package com.ardafirdausr.movie_catalogue.fragment.movie;
+package com.ardafirdausr.movie_catalogue.ui.fragment.movie;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -18,15 +20,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ardafirdausr.movie_catalogue.R;
-import com.ardafirdausr.movie_catalogue.adapter.MovieAdapter;
-import com.ardafirdausr.movie_catalogue.api.movie.response.Movie;
+import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
+import com.ardafirdausr.movie_catalogue.ui.adapter.MovieAdapter;
 
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MoviesFragment extends Fragment implements View.OnClickListener{
+public class MoviesFragment extends Fragment
+        implements LifecycleOwner, View.OnClickListener {
 
     private RecyclerView rvMovies;
     private TextView tvState;
@@ -35,7 +38,6 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
     private MoviesViewModel moviesViewModel;
 
     public MoviesFragment() { }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,8 +50,6 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
         initViewModel();
-        registerObserver();
-        moviesViewModel.initFetchMovies();
     }
 
     private void bindView(View view){
@@ -61,53 +61,68 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initViewModel(){
-        this.moviesViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
-                .get(MoviesViewModel.class);
+        Application application = null;
+        if(getActivity() != null) application = getActivity().getApplication();
+        if(application != null){
+            moviesViewModel = new ViewModelProvider(
+                    this,
+                    new MoviesViewModel.Factory(application))
+                    .get(MoviesViewModel.class);
+            registerObserver();
+        }
     }
 
     private void registerObserver(){
         observeMovies();
-        observeIsFetchData();
-        observeIsFetchSuccess();
+        observeFetchingDataStatus();
+        observeMessae();
     }
 
     private void observeMovies(){
-        moviesViewModel.getMovies().observe(this, new Observer<List<Movie>>() {
+        moviesViewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<Movie>>() {
             @Override
-            public void onChanged(List<Movie> movies) {
-                renderMovieList(movies);
+            public void onChanged(List<Movie> movieResponses) {
+                renderMovieList(movieResponses);
             }
         });
     }
 
-    private void observeIsFetchData(){
-        moviesViewModel.getIsFetchingData().observe(this, new Observer<Boolean>() {
+    private void observeMessae(){
+        moviesViewModel.getMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onChanged(Boolean isFetchingData) {
-                if(isFetchingData) showLoadingState(moviesViewModel.getMessage().getValue());
+            public void onChanged(String message) {
+                tvState.setText(message);
             }
         });
     }
 
-    private void observeIsFetchSuccess(){
-        moviesViewModel.getIsFetchingSuccess().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isFetchSuccess) {
-                if(isFetchSuccess) showMoviesList();
-                else showRetryButton(moviesViewModel.getMessage().getValue());
-            }
-        });
+    private void observeFetchingDataStatus(){
+        moviesViewModel.getFetchingDataStatus()
+                .observe(getViewLifecycleOwner(), new Observer<MoviesViewModel.FetchingStatus>() {
+                    @Override
+                    public void onChanged(MoviesViewModel.FetchingStatus fetchingDataStatus) {
+                        if(fetchingDataStatus == MoviesViewModel.FetchingStatus.LOADING) {
+                            showLoadingState();
+                        }
+                        else if(fetchingDataStatus == MoviesViewModel.FetchingStatus.FAILED){
+                            showRetryButton();
+                        }
+                        else if(fetchingDataStatus == MoviesViewModel.FetchingStatus.SUCCESS){
+                            showMoviesList();
+                        }
+                    }
+                });
     }
 
     private void renderMovieList(List<Movie> movies){
         MovieAdapter movieAdapter = new MovieAdapter();
-        movieAdapter.setMovies(movies);
+        movieAdapter.setMovie(movies);
         movieAdapter.setOnItemClickCallback(new MovieAdapter.OnItemClickCallback() {
             @Override
             public void onClick(View view, Movie movie) {
                 MoviesFragmentDirections.ActionMoviesFragmentToMovieDetailActivity toMovieDetailActivity
-                        = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailActivity(movie);
-                toMovieDetailActivity.setMovie(movie);
+                    = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailActivity(movie.getId());
+                toMovieDetailActivity.setMovieId(movie.getId());
                 Navigation.findNavController(view)
                         .navigate(toMovieDetailActivity);
 
@@ -124,9 +139,8 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         btRetry.setVisibility(View.INVISIBLE);
     }
 
-    private void showLoadingState(String message){
+    private void showLoadingState(){
         hideAllViews();
-        tvState.setText(message);
         tvState.setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.VISIBLE);
     }
@@ -136,9 +150,8 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
         rvMovies.setVisibility(View.VISIBLE);
     }
 
-    private void showRetryButton(String message){
+    private void showRetryButton(){
         hideAllViews();
-        tvState.setText(message);
         tvState.setVisibility(View.VISIBLE);
         btRetry.setVisibility(View.VISIBLE);
     }
@@ -146,7 +159,7 @@ public class MoviesFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.bt_retry){
-            moviesViewModel.initFetchMovies();
+            moviesViewModel.fetchMovies();
         }
     }
 }

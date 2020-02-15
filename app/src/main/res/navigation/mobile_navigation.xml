@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navigation_tv_shows"
-        android:name="com.ardafirdausr.movie_catalogue.fragment.tvshow.TvShowsFragment"
+        android:name="com.ardafirdausr.movie_catalogue.ui.fragment.tvshow.TvShowsFragment"
         android:label="@string/title_tv_shows"
         tools:layout="@layout/fragment_tv_shows" >
         <action
@@ -16,25 +16,25 @@
 
     <activity
         android:id="@+id/movieDetailActivity"
-        android:name="com.ardafirdausr.movie_catalogue.activity.MovieDetailActivity"
+        android:name="com.ardafirdausr.movie_catalogue.ui.activity.MovieDetail.MovieDetailActivity"
         android:label="activity_movie_detail"
         tools:layout="@layout/activity_movie_detail" >
         <argument
-            android:name="movie"
-            app:argType="com.ardafirdausr.movie_catalogue.api.movie.response.Movie" />
+            android:name="movieId"
+            app:argType="long" />
     </activity>
     <activity
         android:id="@+id/tvShowDetailActivity"
-        android:name="com.ardafirdausr.movie_catalogue.activity.TvShowDetailActivity"
+        android:name="com.ardafirdausr.movie_catalogue.ui.activity.TvShowDetail.TvShowDetailActivity"
         android:label="activity_tv_show_detail"
         tools:layout="@layout/activity_tv_show_detail" >
         <argument
-            android:name="tvShow"
-            app:argType="com.ardafirdausr.movie_catalogue.api.movie.response.TvShow" />
+            android:name="tvShowId"
+            app:argType="long" />
     </activity>
     <fragment
         android:id="@+id/navigation_movies"
-        android:name="com.ardafirdausr.movie_catalogue.fragment.movie.MoviesFragment"
+        android:name="com.ardafirdausr.movie_catalogue.ui.fragment.movie.MoviesFragment"
         android:label="@string/title_movies"
         tools:layout="@layout/fragment_movies">
         <action

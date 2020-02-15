@@ -1,11 +1,11 @@
-package com.ardafirdausr.movie_catalogue.api.movie.response;
+package com.ardafirdausr.movie_catalogue.repository.remote.movie.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TvShow  implements Parcelable {
+public class TvShowResponse implements Parcelable {
 
     @SerializedName("id")
     private Long id;
@@ -28,7 +28,7 @@ public class TvShow  implements Parcelable {
     @SerializedName("backdrop_path")
     private String coverUrl;
 
-    private TvShow(Parcel in) {
+    private TvShowResponse(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
         } else {
@@ -72,15 +72,15 @@ public class TvShow  implements Parcelable {
         return 0;
     }
 
-    public static final Creator<TvShow> CREATOR = new Creator<TvShow>() {
+    public static final Creator<TvShowResponse> CREATOR = new Creator<TvShowResponse>() {
         @Override
-        public TvShow createFromParcel(Parcel in) {
-            return new TvShow(in);
+        public TvShowResponse createFromParcel(Parcel in) {
+            return new TvShowResponse(in);
         }
 
         @Override
-        public TvShow[] newArray(int size) {
-            return new TvShow[size];
+        public TvShowResponse[] newArray(int size) {
+            return new TvShowResponse[size];
         }
     };
 
@@ -96,47 +96,23 @@ public class TvShow  implements Parcelable {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getFirstAirDate() {
         return firstAirDate;
     }
 
-    public void setFirstAirDate(String firstAirDate) {
-        this.firstAirDate = firstAirDate;
-    }
-
     public Double getVote() {
         return vote;
-    }
-
-    public void setVote(Double vote) {
-        this.vote = vote;
     }
 
     public String getImageUrl() {
         return "https://image.tmdb.org/t/p/w500" + imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public String getCoverUrl() {
         return "https://image.tmdb.org/t/p/w500" + coverUrl;
-    }
-
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
     }
 }

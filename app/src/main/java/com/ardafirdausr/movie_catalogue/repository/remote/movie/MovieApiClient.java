@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.api.movie;
+package com.ardafirdausr.movie_catalogue.repository.remote.movie;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

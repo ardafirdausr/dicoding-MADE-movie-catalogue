@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.adapter;
+package com.ardafirdausr.movie_catalogue.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ardafirdausr.movie_catalogue.R;
-import com.ardafirdausr.movie_catalogue.api.movie.response.TvShow;
+import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,47 +18,51 @@ import java.util.List;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
-public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private List<TvShow> tvShows = new ArrayList<>();
-    private TvShowAdapter.OnItemClickCallback onItemClickCallback;
+    private List<Movie> movies;
+    private OnItemClickCallback onItemClickCallback;
 
-    public void setTvShows(List<TvShow> tvShows) {
-        this.tvShows = tvShows;
+    public MovieAdapter() {
+        this.movies = new ArrayList<>();
     }
 
-    public void setOnItemClickCallback(TvShowAdapter.OnItemClickCallback onItemClickCallback) {
+    public void setMovie(List<Movie> movies) {
+        this.movies.clear();
+        this.movies.addAll(movies);
+    }
+
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback;
     }
 
     @NonNull
     @Override
-    public TvShowAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tv_show_list, parent, false);
-        return new TvShowAdapter.ViewHolder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_list, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TvShowAdapter.ViewHolder holder, int position) {
-        final TvShow movie = tvShows.get(position);
-        holder.bind(movie);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Movie movieResponse = movies.get(position);
+        holder.bind(movieResponse);
         holder.vgListitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemClickCallback.onClick(view, movie);
+                onItemClickCallback.onClick(view, movieResponse);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return tvShows.size();
+        return movies.size();
     }
 
     public interface OnItemClickCallback {
-        void onClick(View view, TvShow movie);
+        void onClick(View view, Movie movieResponse);
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ViewGroup vgListitem;
@@ -75,13 +79,13 @@ public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder
             ivPoster = itemView.findViewById(R.id.iv_poster);
         }
 
-        void bind(TvShow tvShow) {
-            tvTitle.setText(tvShow.getTitle());
-            tvRating.setText(Double.toString(tvShow.getVote()));
-            tvDescription.setText(tvShow.getDescription());
-            tvReleaseDate.setText(tvShow.getFirstAirDate());
+        void bind(Movie movieResponse) {
+            tvTitle.setText(movieResponse.getTitle());
+            tvRating.setText(Double.toString(movieResponse.getVote()));
+            tvDescription.setText(movieResponse.getDescription());
+            tvReleaseDate.setText(movieResponse.getReleaseDate());
             Picasso.get()
-                    .load(tvShow.getImageUrl())
+                    .load(movieResponse.getImageUrl())
                     .resize(90, 120)
                     .transform(new RoundedCornersTransformation(10, 0))
                     .into(ivPoster);
