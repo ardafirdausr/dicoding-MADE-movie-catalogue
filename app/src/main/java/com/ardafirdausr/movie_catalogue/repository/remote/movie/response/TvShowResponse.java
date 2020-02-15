@@ -109,7 +109,7 @@ public class TvShowResponse implements Parcelable {
     }
 
     public String getImageUrl() {
-        return "https://image.tmdb.org/t/p/w500" + imageUrl;
+        return "https://image.tmdb.org/t/p/w342" + imageUrl;
     }
 
     public String getCoverUrl() {

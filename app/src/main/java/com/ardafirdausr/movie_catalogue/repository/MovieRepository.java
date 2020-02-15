@@ -49,6 +49,14 @@ public class MovieRepository {
         return movieDao.getMovie(movieId);
     }
 
+    public void addToFavourite(long movieId){
+        new AddToFavouriteAsyncTask(movieDao).execute(movieId);
+    }
+
+    public void removeFromFavourite(long movieId){
+        new RemoveFromFavouriteAsyncTask(movieDao).execute(movieId);
+    }
+
     public void fetchNowPlayingMovies(final OnFetchCallback onFetchCallback){
         movieApi.getNowPlayingMovies(Util.getApiKey(), Util.getCurrentLanguage(), 1)
             .enqueue(new Callback<MovieListResponse>() {
@@ -108,6 +116,38 @@ public class MovieRepository {
         @Override
         protected Void doInBackground (List<Movie>... movies) {
             movieDao.addMovies(movies[0]);
+            return null;
+        }
+    }
+
+    private static class AddToFavouriteAsyncTask extends AsyncTask<Long, Void, Void>{
+
+        private MovieDao movieDao;
+
+        private AddToFavouriteAsyncTask(MovieDao movieDao){
+            this.movieDao = movieDao;
+        }
+
+        @Override
+        protected Void doInBackground(Long... movieIds) {
+            long movieId = movieIds[0];
+            movieDao.addToFavourite(movieId);
+            return null;
+        }
+    }
+
+    private class RemoveFromFavouriteAsyncTask extends AsyncTask<Long, Void, Void>{
+
+        private MovieDao movieDao;
+
+        private RemoveFromFavouriteAsyncTask(MovieDao movieDao){
+            this.movieDao = movieDao;
+        }
+
+        @Override
+        protected Void doInBackground(Long... movieIds) {
+            long movieId = movieIds[0];
+            movieDao.removeFromFavourite(movieId);
             return null;
         }
     }
