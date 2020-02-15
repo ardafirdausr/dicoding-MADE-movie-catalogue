@@ -20,6 +20,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.internal.EverythingIsNonNull;
 
 public class TvShowRepository {
 
@@ -43,13 +44,22 @@ public class TvShowRepository {
         return tvShowDao.getTvShows();
     }
 
-    public LiveData<TvShow> getTvShow(long tvShowId){
-        return tvShowDao.getTvShow(tvShowId);
+    public LiveData<TvShow> getTvShow(long tvShowId){ return tvShowDao.getTvShow(tvShowId); }
+
+    public void addTvShowToFavourite(long tvShowId){
+        new AddTvShowToFavouriteAsyncTask(tvShowDao).execute(tvShowId);
     }
+
+    public void removeTvShowFromFavourite(long tvShowId){
+        new RemoveTvShowFromFavouriteAsyncTask(tvShowDao).execute(tvShowId);
+    }
+
 
     public void fetchTvOnTheAir(final OnFetchCallback onFetchCallback){
         movieApi.getTvOnTheAir(Util.getApiKey(), Util.getCurrentLanguage(), 1)
                 .enqueue(new Callback<TvShowListResponse>() {
+
+                    @EverythingIsNonNull
                     @Override
                     public void onResponse(Call<TvShowListResponse> call, Response<TvShowListResponse> response) {
                         if(response.body() != null){
@@ -103,6 +113,38 @@ public class TvShowRepository {
         @Override
         protected Void doInBackground (List<TvShow>... movies) {
             tvShowDao.addTvShows(movies[0]);
+            return null;
+        }
+    }
+
+    private static class AddTvShowToFavouriteAsyncTask extends AsyncTask<Long, Void, Void>{
+
+        private TvShowDao tvShowDao;
+
+        private AddTvShowToFavouriteAsyncTask(TvShowDao tvShowDao){
+            this.tvShowDao = tvShowDao;
+        }
+
+        @Override
+        protected Void doInBackground(Long... tvShowIds) {
+            long tvShowId = tvShowIds[0];
+            tvShowDao.addTvShowToFavourite(tvShowId);
+            return null;
+        }
+    }
+
+    private static class RemoveTvShowFromFavouriteAsyncTask extends AsyncTask<Long, Void, Void>{
+
+        private TvShowDao tvShowDao;
+
+        private RemoveTvShowFromFavouriteAsyncTask(TvShowDao tvShowDao){
+            this.tvShowDao = tvShowDao;
+        }
+
+        @Override
+        protected Void doInBackground(Long... tvShowIds) {
+            long tvShowId = tvShowIds[0];
+            tvShowDao.removeTvShowFromFavourite(tvShowId);
             return null;
         }
     }

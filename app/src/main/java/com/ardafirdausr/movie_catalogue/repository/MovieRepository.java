@@ -49,12 +49,12 @@ public class MovieRepository {
         return movieDao.getMovie(movieId);
     }
 
-    public void addToFavourite(long movieId){
-        new AddToFavouriteAsyncTask(movieDao).execute(movieId);
+    public void addMovieToFavourite(long movieId){
+        new AddMovieToFavouriteAsyncTask(movieDao).execute(movieId);
     }
 
-    public void removeFromFavourite(long movieId){
-        new RemoveFromFavouriteAsyncTask(movieDao).execute(movieId);
+    public void removeMovieFromFavourite(long movieId){
+        new RemoveMovieFromFavouriteAsyncTask(movieDao).execute(movieId);
     }
 
     public void fetchNowPlayingMovies(final OnFetchCallback onFetchCallback){
@@ -120,34 +120,34 @@ public class MovieRepository {
         }
     }
 
-    private static class AddToFavouriteAsyncTask extends AsyncTask<Long, Void, Void>{
+    private static class AddMovieToFavouriteAsyncTask extends AsyncTask<Long, Void, Void>{
 
         private MovieDao movieDao;
 
-        private AddToFavouriteAsyncTask(MovieDao movieDao){
+        private AddMovieToFavouriteAsyncTask(MovieDao movieDao){
             this.movieDao = movieDao;
         }
 
         @Override
         protected Void doInBackground(Long... movieIds) {
             long movieId = movieIds[0];
-            movieDao.addToFavourite(movieId);
+            movieDao.addMovieToFavourite(movieId);
             return null;
         }
     }
 
-    private class RemoveFromFavouriteAsyncTask extends AsyncTask<Long, Void, Void>{
+    private static class RemoveMovieFromFavouriteAsyncTask extends AsyncTask<Long, Void, Void>{
 
         private MovieDao movieDao;
 
-        private RemoveFromFavouriteAsyncTask(MovieDao movieDao){
+        private RemoveMovieFromFavouriteAsyncTask(MovieDao movieDao){
             this.movieDao = movieDao;
         }
 
         @Override
         protected Void doInBackground(Long... movieIds) {
             long movieId = movieIds[0];
-            movieDao.removeFromFavourite(movieId);
+            movieDao.removeMovieFromFavourite(movieId);
             return null;
         }
     }

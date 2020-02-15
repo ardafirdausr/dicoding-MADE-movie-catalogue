@@ -82,7 +82,8 @@ public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder
             tvReleaseDate.setText(tvShowResponse.getFirstAirDate());
             Picasso.get()
                     .load(tvShowResponse.getImageUrl())
-                    .resize(90, 120)
+                    .fit()
+                    .centerCrop()
                     .transform(new RoundedCornersTransformation(10, 0))
                     .into(ivPoster);
         }

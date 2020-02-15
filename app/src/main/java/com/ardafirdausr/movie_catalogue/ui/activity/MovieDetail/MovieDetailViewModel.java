@@ -28,12 +28,12 @@ public class MovieDetailViewModel extends AndroidViewModel {
         return movie;
     }
 
-    public void addToFavourite(long movieId){
-        movieRepository.addToFavourite(movieId);
+    public void addMovieToFavourite(long movieId){
+        movieRepository.addMovieToFavourite(movieId);
     }
 
-    public void removeFromFavourite(long movieId){
-        movieRepository.removeFromFavourite(movieId);
+    public void removeMovieFromFavourite(long movieId){
+        movieRepository.removeMovieFromFavourite(movieId);
     }
 
     public static class Factory implements ViewModelProvider.Factory {

@@ -23,7 +23,10 @@ public interface TvShowDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addTvShows(List<TvShow> tvShows);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateTvShow(TvShow tvShow);
+    @Query("UPDATE tv_shows SET isFavourite = 1 WHERE id = :tvShowId")
+    void addTvShowToFavourite(long tvShowId);
+
+    @Query("UPDATE tv_shows SET isFavourite = 0 WHERE id = :tvShowId")
+    void removeTvShowFromFavourite(long tvShowId);
 
 }

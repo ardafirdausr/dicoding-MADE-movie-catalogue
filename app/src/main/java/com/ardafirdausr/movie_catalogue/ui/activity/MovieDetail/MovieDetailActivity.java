@@ -42,11 +42,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         renderExtraMovie();
     }
 
-    private void initViewModel(){
-        movieDetailViewModel = new ViewModelProvider(
-                this,
-                new MovieDetailViewModel.Factory(getApplication()))
-                .get(MovieDetailViewModel.class);
+    private void bindView(){
+        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+        appBarLayout = findViewById(R.id.app_bar);
+        tvTitle = findViewById(R.id.tv_title);
+        tvReleaseDate = findViewById(R.id.tv_release_date);
+        tvRating = findViewById(R.id.tv_rating);
+        tvDescription = findViewById(R.id.tv_description);
+        ivPoster = findViewById(R.id.iv_poster);
+        ivCover = findViewById(R.id.iv_cover);
+        toolbar = findViewById(R.id.toolbar);
+        fabFavourite = findViewById(R.id.fab_favourite);
     }
 
     private void setActionBar(){
@@ -54,6 +60,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void initViewModel(){
+        movieDetailViewModel = new ViewModelProvider(
+                this,
+                new MovieDetailViewModel.Factory(getApplication()))
+                .get(MovieDetailViewModel.class);
     }
 
     private void setActionBarTitle(final String title){
@@ -75,19 +88,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void bindView(){
-        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-        appBarLayout = findViewById(R.id.app_bar);
-        tvTitle = findViewById(R.id.tv_title);
-        tvReleaseDate = findViewById(R.id.tv_release_date);
-        tvRating = findViewById(R.id.tv_rating);
-        tvDescription = findViewById(R.id.tv_description);
-        ivPoster = findViewById(R.id.iv_poster);
-        ivCover = findViewById(R.id.iv_cover);
-        toolbar = findViewById(R.id.toolbar);
-        fabFavourite = findViewById(R.id.fab_favourite);
     }
 
     private void renderExtraMovie(){
@@ -117,18 +117,18 @@ public class MovieDetailActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             if(movie.getIsFavourite()){
-                                movieDetailViewModel.removeFromFavourite(movie.getId());
+                                movieDetailViewModel.removeMovieFromFavourite(movie.getId());
                                 Toast.makeText(
                                         getApplicationContext(),
-                                        R.string.success_add_to_favourite,
+                                        R.string.success_remove_from_favourite,
                                         Toast.LENGTH_SHORT)
                                         .show();
                             }
                             else {
-                                movieDetailViewModel.addToFavourite(movie.getId());
+                                movieDetailViewModel.addMovieToFavourite(movie.getId());
                                 Toast.makeText(
                                         getApplicationContext(),
-                                        R.string.success_remove_from_favourite,
+                                        R.string.success_add_to_favourite,
                                         Toast.LENGTH_SHORT)
                                         .show();
                             }

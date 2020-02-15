@@ -28,6 +28,13 @@ public class TvShowDetailViewModel extends AndroidViewModel {
         return tvShow;
     }
 
+    public void addTvShowToFavourite(long tvShowId){
+        tvShowRepository.addTvShowToFavourite(tvShowId);
+    }
+
+    public void removeTvShowFromFavourite(long tvShowId){
+        tvShowRepository.removeTvShowFromFavourite(tvShowId);
+    }
 
     public static class Factory implements ViewModelProvider.Factory {
 

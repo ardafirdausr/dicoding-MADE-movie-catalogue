@@ -23,9 +23,9 @@ public interface MovieDao {
     void addMovies(List<Movie> movies);
 
     @Query("UPDATE movies SET isFavourite = 1 WHERE id=:movieId")
-    void addToFavourite(long movieId);
+    void addMovieToFavourite(long movieId);
 
     @Query("UPDATE movies SET isFavourite = 0 WHERE id=:movieId")
-    void removeFromFavourite(long movieId);
+    void removeMovieFromFavourite(long movieId);
 
 }
