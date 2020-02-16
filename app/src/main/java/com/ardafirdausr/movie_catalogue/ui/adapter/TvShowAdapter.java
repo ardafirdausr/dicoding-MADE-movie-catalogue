@@ -40,12 +40,12 @@ public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TvShowAdapter.ViewHolder holder, int position) {
-        final TvShow movie = tvShows.get(position);
-        holder.bind(movie);
+        final TvShow tvShow = tvShows.get(position);
+        holder.bind(tvShow);
         holder.vgListitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemClickCallback.onClick(view, movie);
+                onItemClickCallback.onClick(view, tvShow);
             }
         });
     }
@@ -56,7 +56,7 @@ public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder
     }
 
     public interface OnItemClickCallback {
-        void onClick(View view, TvShow movie);
+        void onClick(View view, TvShow tvShow);
     }
 
 

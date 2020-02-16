@@ -44,6 +44,10 @@ public class TvShowRepository {
         return tvShowDao.getTvShows();
     }
 
+    public LiveData<List<TvShow>> getFavouriteTvShows(){
+        return tvShowDao.getFavouriteTvShows();
+    }
+
     public LiveData<TvShow> getTvShow(long tvShowId){ return tvShowDao.getTvShow(tvShowId); }
 
     public void addTvShowToFavourite(long tvShowId){
@@ -80,7 +84,6 @@ public class TvShowRepository {
                 });
 
     }
-
 
     private List<TvShow> transformTvShowsResponseToTvShowEntities(List<TvShowResponse> tvShowsResponse){
         List<TvShow> tvShows = new ArrayList<>();

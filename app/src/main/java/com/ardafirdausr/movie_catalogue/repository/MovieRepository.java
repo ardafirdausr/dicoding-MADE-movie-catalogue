@@ -2,7 +2,6 @@ package com.ardafirdausr.movie_catalogue.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -45,6 +44,10 @@ public class MovieRepository {
         return movieDao.getMovies();
     }
 
+    public LiveData<List<Movie>> getFavouriteMovies(){
+        return movieDao.getFavouriteMovies();
+    }
+
     public LiveData<Movie> getMovie(long movieId){
         return movieDao.getMovie(movieId);
     }
@@ -64,9 +67,7 @@ public class MovieRepository {
                 @EverythingIsNonNull
                 @Override
                 public void onResponse(Call<MovieListResponse> call, Response<MovieListResponse> response) {
-                    Log.d("WWWWW", response.body().toString());
                     if (response.body() != null) {
-                        Log.d("WWWWW", response.body().toString());
                         onFetchCallback.onSuccess();
                         List<MovieResponse> moviesResponse = response.body().getMovies();
                         List<Movie> movies = transformMoviesResponseToMovieEntities(moviesResponse);

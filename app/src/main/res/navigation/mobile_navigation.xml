@@ -5,6 +5,11 @@
     app:startDestination="@id/navigation_movies">
 
     <fragment
+        android:id="@+id/navigation_favourites"
+        android:name="com.ardafirdausr.movie_catalogue.ui.fragment.favourite.FavouritesFragment"
+        android:label="@string/title_favourites"
+        tools:layout="@layout/fragment_favourites" />
+    <fragment
         android:id="@+id/navigation_tv_shows"
         android:name="com.ardafirdausr.movie_catalogue.ui.fragment.tvshow.TvShowsFragment"
         android:label="@string/title_tv_shows"
@@ -40,6 +45,24 @@
         <action
             android:id="@+id/action_moviesFragment_to_movieDetailActivity"
             app:destination="@+id/movieDetailActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteMoviesFragment"
+        android:name="com.ardafirdausr.movie_catalogue.ui.fragment.favourite.FavouriteMoviesFragment"
+        android:label="fragment_favourite_movies"
+        tools:layout="@layout/fragment_favourite_movies" >
+        <action
+            android:id="@+id/action_favouriteMoviesFragment_to_movieDetailActivity"
+            app:destination="@+id/movieDetailActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteTvShowsFragment"
+        android:name="com.ardafirdausr.movie_catalogue.ui.fragment.favourite.FavouriteTvShowsFragment"
+        android:label="fragment_favourite_tv_shows"
+        tools:layout="@layout/fragment_favourite_tv_shows" >
+        <action
+            android:id="@+id/action_favouriteTvShowsFragment_to_tvShowDetailActivity"
+            app:destination="@id/tvShowDetailActivity" />
     </fragment>
 
 </navigation>

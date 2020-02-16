@@ -75,7 +75,7 @@ public class MoviesFragment extends Fragment
     private void registerObserver(){
         observeMovies();
         observeFetchingDataStatus();
-        observeMessae();
+        observeMessage();
     }
 
     private void observeMovies(){
@@ -87,7 +87,7 @@ public class MoviesFragment extends Fragment
         });
     }
 
-    private void observeMessae(){
+    private void observeMessage(){
         moviesViewModel.getMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String message) {

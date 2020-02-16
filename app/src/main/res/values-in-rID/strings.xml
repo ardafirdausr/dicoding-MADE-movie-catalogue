@@ -10,6 +10,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_movies">Film</string>
     <string name="title_tv_shows">Serial Tv</string>
+    <string name="title_favourites">Favorit</string>
     <string name="change_language_settings">Ubah bahasa</string>
     <string name="action_settings">Pengaturan</string>
     <string name="success_add_to_favourite">Berhasil menambahkan ke favourite</string>
