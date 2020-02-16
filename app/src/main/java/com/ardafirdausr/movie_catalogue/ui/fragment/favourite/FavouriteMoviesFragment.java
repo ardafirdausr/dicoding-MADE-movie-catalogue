@@ -11,19 +11,18 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
 import com.ardafirdausr.movie_catalogue.ui.activity.MovieDetail.MovieDetailActivity;
 import com.ardafirdausr.movie_catalogue.ui.adapter.MovieAdapter;
-import com.ardafirdausr.movie_catalogue.ui.fragment.movie.MoviesFragmentDirections;
 
 import java.util.List;
 
@@ -31,6 +30,7 @@ public class FavouriteMoviesFragment extends Fragment
     implements LifecycleOwner {
 
     private RecyclerView rvFavouriteMovies;
+    private TextView tvState;
     private FavouriteMoviesViewModel favouriteMoviesViewModel;
 
     public FavouriteMoviesFragment() { }
@@ -49,6 +49,7 @@ public class FavouriteMoviesFragment extends Fragment
     }
 
     private void bindView(View view){
+        tvState = view.findViewById(R.id.tv_state);
         rvFavouriteMovies = view.findViewById(R.id.rv_movie_list);
     }
 
@@ -71,13 +72,21 @@ public class FavouriteMoviesFragment extends Fragment
     private void observeFavouriteMovies(){
         favouriteMoviesViewModel.getFavouriteMovies().observe(getViewLifecycleOwner(), new Observer<List<Movie>>() {
             @Override
-            public void onChanged(List<Movie> movieResponses) {
-                renderMovieList(movieResponses);
+            public void onChanged(List<Movie> favouriteMovies) {
+                if(favouriteMovies.isEmpty()) showNoFavouriteMovieFound();
+                else renderMovieList(favouriteMovies);
             }
         });
     }
 
+    private void showNoFavouriteMovieFound(){
+        tvState.setVisibility(View.VISIBLE);
+        rvFavouriteMovies.setVisibility(View.INVISIBLE);
+    }
+
     private void renderMovieList(List<Movie> movies){
+        tvState.setVisibility(View.INVISIBLE);
+        rvFavouriteMovies.setVisibility(View.VISIBLE);
         MovieAdapter movieAdapter = new MovieAdapter();
         movieAdapter.setMovie(movies);
         movieAdapter.setOnItemClickCallback(new MovieAdapter.OnItemClickCallback() {
@@ -86,13 +95,6 @@ public class FavouriteMoviesFragment extends Fragment
                 Intent toMovieDetailActivity = new Intent(getContext(), MovieDetailActivity.class);
                 toMovieDetailActivity.putExtra("movieId", movie.getId());
                 startActivity(toMovieDetailActivity);
-//                FavouriteMoviesFragmentDirections.ActionFavouriteMoviesFragmentToMovieDetailActivity
-//                        toMovieDetailActivity = FavouriteMoviesFragmentDirections
-//                            .actionFavouriteMoviesFragmentToMovieDetailActivity(movie.getId());
-//                toMovieDetailActivity.setMovieId(movie.getId());
-//                Navigation.findNavController(view)
-//                        .navigate(toMovieDetailActivity);
-
             }
         });
         rvFavouriteMovies.setAdapter(movieAdapter);
