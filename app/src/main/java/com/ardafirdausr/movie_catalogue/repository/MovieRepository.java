@@ -1,9 +1,13 @@
 package com.ardafirdausr.movie_catalogue.repository;
 
 import android.app.Application;
+import android.app.MediaRouteActionProvider;
 import android.os.AsyncTask;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 
 import com.ardafirdausr.movie_catalogue.repository.local.MovieCatalogueDatabase;
 import com.ardafirdausr.movie_catalogue.repository.local.dao.MovieDao;
@@ -56,11 +60,15 @@ public class MovieRepository {
         new AddMovieToFavouriteAsyncTask(movieDao).execute(movieId);
     }
 
+    public int getMovieCount(){
+        return movieDao.countMovies();
+    }
+
     public void removeMovieFromFavourite(long movieId){
         new RemoveMovieFromFavouriteAsyncTask(movieDao).execute(movieId);
     }
 
-    public void fetchNowPlayingMovies(final OnFetchCallback onFetchCallback){
+    public void fetchNowPlayingMovies(@Nullable final OnFetchCallback onFetchCallback){
         movieApi.getNowPlayingMovies(Util.getApiKey(), Util.getCurrentLanguage(), 1)
             .enqueue(new Callback<MovieListResponse>() {
 
@@ -68,20 +76,20 @@ public class MovieRepository {
                 @Override
                 public void onResponse(Call<MovieListResponse> call, Response<MovieListResponse> response) {
                     if (response.body() != null) {
-                        onFetchCallback.onSuccess();
+                        if(onFetchCallback != null) onFetchCallback.onSuccess();
                         List<MovieResponse> moviesResponse = response.body().getMovies();
                         List<Movie> movies = transformMoviesResponseToMovieEntities(moviesResponse);
                         new InsertMoviesAsyncTask(movieDao).execute(movies);
                     }
                     else {
-                        onFetchCallback.onFailed("Data not available");
+                        if(onFetchCallback != null) onFetchCallback.onFailed("Data not available");
                     }
                 }
 
                 @EverythingIsNonNull
                 @Override
                 public void onFailure(Call<MovieListResponse> call, Throwable t) {
-                    onFetchCallback.onFailed("Failed to load data");
+                    if(onFetchCallback != null) onFetchCallback.onFailed("Failed to load data");
                 }
             });
     }

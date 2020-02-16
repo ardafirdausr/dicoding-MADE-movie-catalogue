@@ -1,6 +1,5 @@
 package com.ardafirdausr.movie_catalogue.ui.fragment.movie;
 
-
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -18,17 +17,14 @@ import java.util.List;
 public class MoviesViewModel extends AndroidViewModel {
 
     private MovieRepository movieRepository;
-    private LiveData<List<Movie>> movies;
     private MutableLiveData<FetchingStatus> fetchingDataStatus;
     private MutableLiveData<String> message;
 
     private MoviesViewModel(@NonNull Application application) {
         super(application);
-        movies = new MutableLiveData<>();
-        fetchingDataStatus = new MutableLiveData<>(FetchingStatus.LOADING);
-        message = new MutableLiveData<>("Loading...");
+        fetchingDataStatus = new MutableLiveData<>(FetchingStatus.SUCCESS);
+        message = new MutableLiveData<>();
         movieRepository = MovieRepository.getInstance(application);
-        fetchMovies();
     }
 
     public void fetchMovies(){
@@ -49,9 +45,9 @@ public class MoviesViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<List<Movie>> getMovies() {
-        movies = movieRepository.getMovies();
-        return movies;
+    public LiveData<List<Movie>> getMovies(){
+        if(movieRepository.getMovieCount() < 1) fetchMovies();
+        return movieRepository.getMovies();
     }
 
     public LiveData<FetchingStatus> getFetchingDataStatus() {

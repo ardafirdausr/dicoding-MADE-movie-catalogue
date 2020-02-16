@@ -22,6 +22,9 @@ public interface TvShowDao {
     @Query("SELECT * FROM tv_shows WHERE id=:id")
     LiveData<TvShow> getTvShow(long id);
 
+    @Query("SELECT COUNT(*) FROM tv_shows")
+    int countTvShows();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addTvShows(List<TvShow> tvShows);
 

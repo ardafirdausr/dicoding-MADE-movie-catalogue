@@ -50,6 +50,8 @@ public class TvShowRepository {
 
     public LiveData<TvShow> getTvShow(long tvShowId){ return tvShowDao.getTvShow(tvShowId); }
 
+    public int getTvShowCount(){ return tvShowDao.countTvShows(); }
+
     public void addTvShowToFavourite(long tvShowId){
         new AddTvShowToFavouriteAsyncTask(tvShowDao).execute(tvShowId);
     }

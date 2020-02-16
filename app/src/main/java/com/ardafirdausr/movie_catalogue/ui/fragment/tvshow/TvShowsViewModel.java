@@ -17,15 +17,13 @@ import java.util.List;
 public class TvShowsViewModel extends AndroidViewModel {
 
     private TvShowRepository tvShowRepository;
-    private LiveData<List<TvShow>> tvShows;
     private MutableLiveData<FetchingStatus> fetchingDataStatus;
     private MutableLiveData<String> message;
 
     private TvShowsViewModel(@NonNull Application application) {
         super(application);
-        tvShows = new MutableLiveData<>();
-        fetchingDataStatus = new MutableLiveData<>(FetchingStatus.LOADING);
-        message = new MutableLiveData<>("Loading...");
+        fetchingDataStatus = new MutableLiveData<>(FetchingStatus.SUCCESS);
+        message = new MutableLiveData<>();
         tvShowRepository = TvShowRepository.getInstance(application);
     }
 
@@ -48,8 +46,8 @@ public class TvShowsViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<TvShow>> getTvShows() {
-        tvShows = tvShowRepository.getTvShows();
-        return tvShows;
+        if(tvShowRepository.getTvShowCount() < 1) fetchingTvShows();
+        return tvShowRepository.getTvShows();
     }
 
     public LiveData<FetchingStatus> getFetchingDataStatus() { return fetchingDataStatus; }

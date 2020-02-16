@@ -70,7 +70,6 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
                     new TvShowsViewModel.Factory(application))
                     .get(TvShowsViewModel.class);
             registerObserver();
-            tvShowsViewModel.fetchingTvShows();
         }
     }
 

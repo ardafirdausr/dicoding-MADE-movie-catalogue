@@ -81,8 +81,8 @@ public class MoviesFragment extends Fragment
     private void observeMovies(){
         moviesViewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<Movie>>() {
             @Override
-            public void onChanged(List<Movie> movieResponses) {
-                renderMovieList(movieResponses);
+            public void onChanged(List<Movie> movies) {
+                renderMovieList(movies);
             }
         });
     }

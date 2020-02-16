@@ -22,6 +22,9 @@ public interface MovieDao {
     @Query("SELECT * FROM movies WHERE id=:movieId")
     LiveData<Movie> getMovie(long movieId);
 
+    @Query("SELECT COUNT(*) FROM movies")
+    int countMovies();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addMovies(List<Movie> movies);
 
