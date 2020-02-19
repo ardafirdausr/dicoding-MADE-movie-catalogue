@@ -1,5 +1,5 @@
 # Movie Catalogue
-__Movie Catalogoue__ adalah sebuah app yang menampilkan daftar movie terbaru dan juga detailnya. App ini ditujukan untuk memenuhi submission 3 pada course Menjadi Android Developer Expert dari [dicoding](https://www.dicoding.com/academies/14)
+__Movie Catalogoue__ adalah sebuah app yang menampilkan daftar movie terbaru dan juga detailnya. App ini ditujukan untuk memenuhi submission 4 pada course Menjadi Android Developer Expert dari [dicoding](https://www.dicoding.com/academies/14)
 
 
 ## Preview
@@ -16,7 +16,13 @@ __Movie Catalogoue__ adalah sebuah app yang menampilkan daftar movie terbaru dan
    - [x] Menampilkan poster dan informasi film pada halaman detail film.
    - [x] Menggunakan ConstraintLayout untuk menyusun layout.
    - [x] Menampilkan indikator loading ketika data sedang dimuat.
-3. Localization
+3. Favorite Film
+   - [x] Menyimpan film ke database favorite.
+   - [x] Menghapus film dari database favorite.
+   - [x] Menampilkan daftar Favorite Movies.
+   - [x] Menampilkan daftar Favorite Tv Show.
+   - [x] Menampilkan halaman detail dari daftar Favorite.
+4. Localization
    - [x] Aplikasi harus mendukung bahasa Indonesia dan bahasa Inggris.
-4. Configuration Changes
+5. Configuration Changes
    - [x] Aplikasi harus bisa menjaga data yang sudah dimuat ketika terjadi pergantian orientasi dari potrait ke landscape atau sebaliknya.
