@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,13 +32,15 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TvShowsFragment extends Fragment implements View.OnClickListener{
+public class TvShowsFragment extends Fragment
+        implements View.OnClickListener, SearchView.OnQueryTextListener{
 
     private RecyclerView rvTvShows;
     private TextView tvState;
     private ProgressBar pbLoading;
     private Button btRetry;
     private TvShowsViewModel tvShowsViewModel;
+    private SearchView svMovie;
 
     public TvShowsFragment() { }
 
@@ -45,10 +51,26 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
         return inflater.inflate(R.layout.fragment_tv_shows, container, false);
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
         initViewModel();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.main_activity_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        svMovie = (SearchView) searchItem.getActionView();
+        svMovie.setOnQueryTextListener(this);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void bindView(View view){
@@ -166,4 +188,14 @@ public class TvShowsFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }

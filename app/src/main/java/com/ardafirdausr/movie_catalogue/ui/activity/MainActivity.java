@@ -1,7 +1,6 @@
 package com.ardafirdausr.movie_catalogue.ui.activity;
 
 import android.os.Bundle;
-import android.view.Menu;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,22 +31,5 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setElevation(0);
         }
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.action_change_settings) {
-////            Intent mIntent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-////            startActivity(mIntent);
-//            Intent toSettingActivity = new Intent(this, SettingActivity.class);
-//            startActivity(toSettingActivity);
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
 }
