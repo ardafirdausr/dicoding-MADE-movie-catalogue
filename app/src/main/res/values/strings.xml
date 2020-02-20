@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Movie Catalogue</string>
     <string name="placeholder">Lorem Ipsum Dolor</string>
     <string name="retry">Retry</string>
@@ -6,14 +7,33 @@
     <string name="description">Description</string>
     <string name="rating">Rating</string>
     <string name="release_date">Release Date</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_movies">Movies</string>
-    <string name="title_tv_shows">Tv Shows</string>
-    <string name="title_favourites">Favourites</string>
     <string name="change_language_settings">Change Language</string>
-    <string name="action_settings">Settings</string>
     <string name="success_add_to_favourite">Success add to favourite</string>
     <string name="success_remove_from_favourite">Success remove from favourite</string>
     <string name="no_favourite_movie">No favourite movie found</string>
     <string name="no_favourite_tvShow">No favourite tv show found</string>
+    <string name="search_movie">Search movie&#8230;</string>
+    <string name="search_tv_show">Search tv show&#8230;</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_movies">Movies</string>
+    <string name="title_tv_shows">Tv Shows</string>
+    <string name="title_favourites">Favourites</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="setting_general">General</string>
+    <string name="setting_language">Language</string>
+    <string name="setting_notification">Notifications</string>
+    <string name="setting_daily_reminder">Daily Reminder</string>
+    <string name="setting_daily_reminder_summary">
+        Notification will run every 7am.
+    </string>
+    <string name="setting_release_reminder">Release Reminder</string>
+    <string name="setting_release_reminder_summary">
+        The latest movie release notification will run every 8am
+    </string>
+
+    <string name="action_search_movie">Search movie&#8230;</string>
+    <string name="action_search_tv_show">Search tv show&#8230;</string>
+
 </resources>

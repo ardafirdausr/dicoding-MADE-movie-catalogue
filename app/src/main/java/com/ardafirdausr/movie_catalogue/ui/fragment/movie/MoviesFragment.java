@@ -3,14 +3,19 @@ package com.ardafirdausr.movie_catalogue.ui.fragment.movie;
 import android.app.Application;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -25,17 +30,15 @@ import com.ardafirdausr.movie_catalogue.ui.adapter.MovieAdapter;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MoviesFragment extends Fragment
-        implements LifecycleOwner, View.OnClickListener {
+        implements LifecycleOwner, View.OnClickListener, SearchView.OnQueryTextListener {
 
     private RecyclerView rvMovies;
     private TextView tvState;
     private ProgressBar pbLoading;
     private Button btRetry;
     private MoviesViewModel moviesViewModel;
+    private SearchView svMovie;
 
     public MoviesFragment() { }
 
@@ -50,6 +53,15 @@ public class MoviesFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
         initViewModel();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main_activity_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        svMovie = (SearchView) searchItem.getActionView();
+        svMovie.setOnQueryTextListener(this);
     }
 
     private void bindView(View view){
@@ -161,5 +173,15 @@ public class MoviesFragment extends Fragment
         if(v.getId() == R.id.bt_retry){
             moviesViewModel.fetchMovies();
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }

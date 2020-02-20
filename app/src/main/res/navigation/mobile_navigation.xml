@@ -64,5 +64,10 @@
             android:id="@+id/action_favouriteTvShowsFragment_to_tvShowDetailActivity"
             app:destination="@id/tvShowDetailActivity" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.ardafirdausr.movie_catalogue.ui.fragment.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>
