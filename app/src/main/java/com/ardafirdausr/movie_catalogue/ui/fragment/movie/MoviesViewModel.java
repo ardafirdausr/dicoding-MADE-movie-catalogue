@@ -28,9 +28,14 @@ public class MoviesViewModel extends AndroidViewModel {
     }
 
     public void fetchMovies(){
-        fetchingDataStatus.setValue(FetchingStatus.LOADING);
-        message.setValue("Loading...");
         movieRepository.fetchNowPlayingMovies(new MovieRepository.OnFetchCallback(){
+
+            @Override
+            public void onLoad(){
+                fetchingDataStatus.setValue(FetchingStatus.LOADING);
+                message.setValue("Loading...");
+            }
+
             @Override
             public void onSuccess() {
                 fetchingDataStatus.setValue(FetchingStatus.SUCCESS);

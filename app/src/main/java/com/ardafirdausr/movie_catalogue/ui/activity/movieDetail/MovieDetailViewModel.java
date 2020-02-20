@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.ui.activity.MovieDetail;
+package com.ardafirdausr.movie_catalogue.ui.activity.movieDetail;
 
 import android.app.Application;
 

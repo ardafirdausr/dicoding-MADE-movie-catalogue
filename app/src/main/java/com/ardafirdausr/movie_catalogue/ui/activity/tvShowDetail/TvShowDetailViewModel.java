@@ -1,4 +1,4 @@
-package com.ardafirdausr.movie_catalogue.ui.activity.TvShowDetail;
+package com.ardafirdausr.movie_catalogue.ui.activity.tvShowDetail;
 
 import android.app.Application;
 

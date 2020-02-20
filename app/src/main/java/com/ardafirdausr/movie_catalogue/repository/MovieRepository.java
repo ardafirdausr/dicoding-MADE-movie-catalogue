@@ -162,6 +162,7 @@ public class MovieRepository {
     }
 
     public interface OnFetchCallback {
+        void onLoad();
         void onSuccess();
         void onFailed(String errorMessage);
     }

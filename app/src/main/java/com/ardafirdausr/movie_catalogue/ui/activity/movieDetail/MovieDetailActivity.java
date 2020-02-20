@@ -1,7 +1,6 @@
-package com.ardafirdausr.movie_catalogue.ui.activity.MovieDetail;
+package com.ardafirdausr.movie_catalogue.ui.activity.movieDetail;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.widget.Toolbar;

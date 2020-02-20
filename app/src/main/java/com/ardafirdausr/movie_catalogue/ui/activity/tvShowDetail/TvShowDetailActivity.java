@@ -1,9 +1,7 @@
-package com.ardafirdausr.movie_catalogue.ui.activity.TvShowDetail;
+package com.ardafirdausr.movie_catalogue.ui.activity.tvShowDetail;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NavUtils;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 

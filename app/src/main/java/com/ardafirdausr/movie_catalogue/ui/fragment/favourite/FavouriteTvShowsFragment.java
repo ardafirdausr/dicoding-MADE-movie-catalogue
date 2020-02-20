@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.TvShow;
-import com.ardafirdausr.movie_catalogue.ui.activity.TvShowDetail.TvShowDetailActivity;
+import com.ardafirdausr.movie_catalogue.ui.activity.tvShowDetail.TvShowDetailActivity;
 import com.ardafirdausr.movie_catalogue.ui.adapter.TvShowAdapter;
 
 import java.util.List;

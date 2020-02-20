@@ -155,6 +155,7 @@ public class TvShowRepository {
     }
 
     public interface OnFetchCallback {
+        void onLoad();
         void onSuccess();
         void onFailed(String errorMessage);
     }

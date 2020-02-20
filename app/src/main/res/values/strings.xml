@@ -36,4 +36,7 @@
     <string name="action_search_movie">Search movie&#8230;</string>
     <string name="action_search_tv_show">Search tv show&#8230;</string>
 
+    <string name="appwidget_text">Favourite movies</string>
+    <string name="empty_text">No favourite movie</string>
+
 </resources>

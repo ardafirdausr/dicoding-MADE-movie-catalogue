@@ -28,9 +28,14 @@ public class TvShowsViewModel extends AndroidViewModel {
     }
 
     public void fetchingTvShows(){
-        fetchingDataStatus.setValue(FetchingStatus.LOADING);
-        message.setValue("Loading...");
         tvShowRepository.fetchTvOnTheAir(new TvShowRepository.OnFetchCallback(){
+
+            @Override
+            public void onLoad(){
+                fetchingDataStatus.setValue(FetchingStatus.LOADING);
+                message.setValue("Loading...");
+            }
+
             @Override
             public void onSuccess() {
                 fetchingDataStatus.setValue(FetchingStatus.SUCCESS);

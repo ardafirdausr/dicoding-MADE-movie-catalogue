@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
-import com.ardafirdausr.movie_catalogue.ui.activity.MovieDetail.MovieDetailActivity;
+import com.ardafirdausr.movie_catalogue.ui.activity.movieDetail.MovieDetailActivity;
 import com.ardafirdausr.movie_catalogue.ui.adapter.MovieAdapter;
 
 import java.util.List;

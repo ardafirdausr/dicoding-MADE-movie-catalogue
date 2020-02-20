@@ -21,7 +21,7 @@
 
     <activity
         android:id="@+id/movieDetailActivity"
-        android:name="com.ardafirdausr.movie_catalogue.ui.activity.MovieDetail.MovieDetailActivity"
+        android:name="com.ardafirdausr.movie_catalogue.ui.activity.movieDetail.MovieDetailActivity"
         android:label="activity_movie_detail"
         tools:layout="@layout/activity_movie_detail" >
         <argument
@@ -30,7 +30,7 @@
     </activity>
     <activity
         android:id="@+id/tvShowDetailActivity"
-        android:name="com.ardafirdausr.movie_catalogue.ui.activity.TvShowDetail.TvShowDetailActivity"
+        android:name="com.ardafirdausr.movie_catalogue.ui.activity.tvShowDetail.TvShowDetailActivity"
         android:label="activity_tv_show_detail"
         tools:layout="@layout/activity_tv_show_detail" >
         <argument

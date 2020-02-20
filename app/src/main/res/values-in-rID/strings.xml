@@ -36,4 +36,7 @@
     <string name="action_search_movie">Cari film&#8230;</string>
     <string name="action_search_tv_show">Cari serial tv&#8230;</string>
 
+    <string name="appwidget_text">Film favorit</string>
+    <string name="empty_text">Tidak ada film favorit</string>
+
 </resources>
