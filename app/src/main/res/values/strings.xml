@@ -33,6 +33,17 @@
         The latest movie release notification will run every 8am
     </string>
 
+    <string name="alarm_daily_reminder_title">Open Movie Catalogue</string>
+    <string name="alarm_daily_reminder_message">Get movies and tv shows update</string>
+    <string name="alarm_daily_reminder_setup">Daily reminder successfully setup</string>
+    <string name="alarm_daily_reminder_cancel">Daily reminder canceled</string>
+
+    <string name="alarm_release_reminder_title">New Movie Release</string>
+    <string name="alarm_release_reminder_message">is released today</string>
+    <string name="alarm_release_reminder_setup">Release reminder successfully setup</string>
+    <string name="alarm_release_reminder_cancel">Release reminder canceled</string>
+
+
     <string name="action_search_movie">Search movie&#8230;</string>
     <string name="action_search_tv_show">Search tv show&#8230;</string>
 

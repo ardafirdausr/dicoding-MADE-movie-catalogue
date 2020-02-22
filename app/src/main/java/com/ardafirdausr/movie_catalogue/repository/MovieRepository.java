@@ -1,13 +1,10 @@
 package com.ardafirdausr.movie_catalogue.repository;
 
 import android.app.Application;
-import android.app.MediaRouteActionProvider;
 import android.os.AsyncTask;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
 
 import com.ardafirdausr.movie_catalogue.repository.local.MovieCatalogueDatabase;
 import com.ardafirdausr.movie_catalogue.repository.local.dao.MovieDao;
@@ -69,6 +66,7 @@ public class MovieRepository {
     }
 
     public void fetchNowPlayingMovies(@Nullable final OnFetchCallback onFetchCallback){
+        if(onFetchCallback != null) onFetchCallback.onLoad();
         movieApi.getNowPlayingMovies(Util.getApiKey(), Util.getCurrentLanguage(), 1)
             .enqueue(new Callback<MovieListResponse>() {
 

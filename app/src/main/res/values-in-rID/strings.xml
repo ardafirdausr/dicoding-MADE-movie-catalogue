@@ -33,6 +33,16 @@
         Notifikasi rilis movie terbaru akan berjalan setiap jam 8 pagi
     </string>
 
+    <string name="alarm_daily_reminder_title">Buka movie catalogue</string>
+    <string name="alarm_daily_reminder_message">Dapatkan update film dan serial tv</string>
+    <string name="alarm_daily_reminder_setup">Pengingat harian berhasil disiapkan</string>
+    <string name="alarm_daily_reminder_cancel">Pengingat rilis berhasil dibatalkan</string>
+
+    <string name="alarm_release_reminder_title">Film terbaru</string>
+    <string name="alarm_release_reminder_message">dirilis hari ini</string>
+    <string name="alarm_release_reminder_setup">Pengingat rilis berhasil disiapkan</string>
+    <string name="alarm_release_reminder_cancel">Pengingat rilis dibatalkan</string>
+
     <string name="action_search_movie">Cari film&#8230;</string>
     <string name="action_search_tv_show">Cari serial tv&#8230;</string>
 

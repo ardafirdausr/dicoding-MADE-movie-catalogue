@@ -3,6 +3,7 @@ package com.ardafirdausr.movie_catalogue.repository;
 import android.app.Application;
 import android.os.AsyncTask;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import com.ardafirdausr.movie_catalogue.repository.local.MovieCatalogueDatabase;
@@ -61,7 +62,8 @@ public class TvShowRepository {
     }
 
 
-    public void fetchTvOnTheAir(final OnFetchCallback onFetchCallback){
+    public void fetchTvOnTheAir(@Nullable final OnFetchCallback onFetchCallback){
+        if(onFetchCallback != null) onFetchCallback.onLoad();
         movieApi.getTvOnTheAir(Util.getApiKey(), Util.getCurrentLanguage(), 1)
                 .enqueue(new Callback<TvShowListResponse>() {
 
@@ -69,19 +71,19 @@ public class TvShowRepository {
                     @Override
                     public void onResponse(Call<TvShowListResponse> call, Response<TvShowListResponse> response) {
                         if(response.body() != null){
-                            onFetchCallback.onSuccess();
+                            if(onFetchCallback != null) onFetchCallback.onSuccess();
                             List<TvShowResponse> tvShowsResponse = response.body().getTvShows();
                             List<TvShow> tvShows = transformTvShowsResponseToTvShowEntities(tvShowsResponse);
                             new InsertMoviesAsyncTask(tvShowDao).execute(tvShows);
                         }
                         else {
-                            onFetchCallback.onFailed("Data not available");
+                            if(onFetchCallback != null) onFetchCallback.onFailed("Data not available");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<TvShowListResponse> call, Throwable t) {
-                        onFetchCallback.onFailed("Failed to load data");
+                        if(onFetchCallback != null) onFetchCallback.onFailed("Failed to load data");
                     }
                 });
 

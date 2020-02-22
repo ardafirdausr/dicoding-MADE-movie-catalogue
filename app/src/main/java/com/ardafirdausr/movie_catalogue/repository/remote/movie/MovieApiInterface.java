@@ -21,4 +21,11 @@ public interface MovieApiInterface {
             @Query("language") String language,
             @Query("page") int page);
 
+    @GET("discover/movie")
+    Call<MovieListResponse> getMovieRelease(
+            @Query("api_key") String apiKey,
+            @Query("language") String language,
+            @Query("primary_release_date.gte") String primary_release_date_gte,
+            @Query("primary_release_date.lte") String primary_release_date_lte);
+
 }
