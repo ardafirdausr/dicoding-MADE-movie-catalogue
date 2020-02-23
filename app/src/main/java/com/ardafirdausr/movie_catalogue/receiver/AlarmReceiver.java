@@ -41,6 +41,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private Context context;
 
+    public AlarmReceiver() {}
+
     public AlarmReceiver(Context context) {
         this.context = context;
     }

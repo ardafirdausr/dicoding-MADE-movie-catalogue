@@ -5,7 +5,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.widget.Toolbar;
 
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +19,13 @@ import android.widget.Toast;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
+import com.ardafirdausr.movie_catalogue.ui.widget.FavouriteMoviesWidget;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
@@ -89,13 +97,24 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void updateFavouriteWidget(){
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+        int[] movieCatalogueWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(
+                getPackageName(),
+                FavouriteMoviesWidget.class.getName()));
+        if(movieCatalogueWidgetIds.length > 0){
+            appWidgetManager.notifyAppWidgetViewDataChanged(movieCatalogueWidgetIds, R.id.stack_view);
+        }
+    }
+
     private void renderExtraMovie(){
-        Bundle intentExtra = getIntent().getExtras();
+        final Bundle intentExtra = getIntent().getExtras();
         if(intentExtra != null){
             long movieId = MovieDetailActivityArgs.fromBundle(intentExtra).getMovieId();
             movieDetailViewModel.getMovie(movieId).observe(this, new Observer<Movie>() {
                 @Override
                 public void onChanged(final Movie movie) {
+                    updateFavouriteWidget();
                     setActionBarTitle(movie.getTitle());
                     tvTitle.setText(movie.getTitle());
                     tvReleaseDate.setText(movie.getReleaseDate());

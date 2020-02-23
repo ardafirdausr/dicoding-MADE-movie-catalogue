@@ -19,6 +19,9 @@ public interface MovieDao {
     @Query("SELECT * FROM movies WHERE isFavourite = 1")
     LiveData<List<Movie>> getFavouriteMovies();
 
+    @Query("SELECT * FROM movies WHERE isFavourite = 1")
+    List<Movie> getFavouriteMoviesData();
+
     @Query("SELECT * FROM movies WHERE id=:movieId")
     LiveData<Movie> getMovie(long movieId);
 

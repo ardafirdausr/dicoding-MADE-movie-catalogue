@@ -107,7 +107,8 @@ public class NotificationIntentService extends IntentService {
                     if(response.body() != null){
                         List<MovieResponse> movies = response.body().getMovies();
                         for(MovieResponse movie: movies){
-                            showNotification(c.incrementAndGet(), title, movie.getTitle());
+                            String message = movie.getTitle() + " " + getString(R.string.alarm_release_reminder_message);
+                            showNotification(c.incrementAndGet(), title, message);
                         }
                     }
                 }
