@@ -23,6 +23,7 @@
 
     <string name="setting_general">General</string>
     <string name="setting_language">Language</string>
+    <string name="setting_language_summary">When you change language, your favourites data will be lost</string>
     <string name="setting_notification">Notifications</string>
     <string name="setting_daily_reminder">Daily Reminder</string>
     <string name="setting_daily_reminder_summary">

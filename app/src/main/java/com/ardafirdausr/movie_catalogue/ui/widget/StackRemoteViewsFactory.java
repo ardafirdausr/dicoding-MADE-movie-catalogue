@@ -3,7 +3,6 @@ package com.ardafirdausr.movie_catalogue.ui.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;

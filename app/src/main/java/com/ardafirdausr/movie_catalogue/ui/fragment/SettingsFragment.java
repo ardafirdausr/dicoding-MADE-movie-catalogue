@@ -1,8 +1,18 @@
 package com.ardafirdausr.movie_catalogue.ui.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.media.audiofx.Equalizer;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -10,6 +20,9 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import com.ardafirdausr.movie_catalogue.receiver.AlarmReceiver;
 import com.ardafirdausr.movie_catalogue.R;
+import com.ardafirdausr.movie_catalogue.ui.activity.MainActivity;
+
+import java.util.Locale;
 
 public class SettingsFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceChangeListener{
@@ -43,15 +56,27 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     private void changeLanguage(String languageCode){
-        Log.d("WWWWW", languageCode);
-    }
+        String[] locale = languageCode.split("-");
+        String language = locale[0];
+        String countryCode = locale[1];
+        Locale newLocale = new Locale(language, countryCode);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.setLocale(newLocale);
+        res.updateConfiguration(conf, dm);
 
+        // refresh activity
+        Intent refresh = new Intent(getContext(), MainActivity.class);
+        refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(refresh);
+    }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch(preference.getKey()){
             case "language":
-                changeLanguage(String.valueOf(newValue));
+                changeLanguage((String) newValue);
                 break;
             case "daily_reminder":
                 if((boolean) newValue){

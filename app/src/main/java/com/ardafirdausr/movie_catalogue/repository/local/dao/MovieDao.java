@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM movies")
+    @Query("SELECT * FROM movies ORDER BY release_date DESC")
     LiveData<List<Movie>> getMovies();
 
     @Query("SELECT * FROM movies WHERE isFavourite = 1")
@@ -28,8 +29,14 @@ public interface MovieDao {
     @Query("SELECT COUNT(*) FROM movies")
     int countMovies();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void addMovies(List<Movie> movies);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void addMovie(Movie movie);
+
+    @Update
+    void updateMovie(Movie movie);
 
     @Query("UPDATE movies SET isFavourite = 1 WHERE id=:movieId")
     void addMovieToFavourite(long movieId);

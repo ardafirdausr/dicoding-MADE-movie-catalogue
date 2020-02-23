@@ -11,43 +11,25 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ardafirdausr.movie_catalogue.repository.MovieRepository;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
+import com.ardafirdausr.movie_catalogue.repository.remote.movie.Resource;
 
 import java.util.List;
 
 public class MoviesViewModel extends AndroidViewModel {
 
     private MovieRepository movieRepository;
-    private MutableLiveData<FetchingStatus> fetchingDataStatus;
-    private MutableLiveData<String> message;
 
     private MoviesViewModel(@NonNull Application application) {
         super(application);
-        fetchingDataStatus = new MutableLiveData<>(FetchingStatus.SUCCESS);
-        message = new MutableLiveData<>();
         movieRepository = MovieRepository.getInstance(application);
     }
 
     public void fetchMovies(){
-        movieRepository.fetchNowPlayingMovies(new MovieRepository.OnFetchCallback(){
+        movieRepository.fetchNowPlayingMovies();
+    }
 
-            @Override
-            public void onLoad(){
-                fetchingDataStatus.setValue(FetchingStatus.LOADING);
-                message.setValue("Loading...");
-            }
-
-            @Override
-            public void onSuccess() {
-                fetchingDataStatus.setValue(FetchingStatus.SUCCESS);
-                message.setValue("Success");
-            }
-
-            @Override
-            public void onFailed(String errorMessage) {
-                fetchingDataStatus.setValue(FetchingStatus.FAILED);
-                message.setValue(errorMessage);
-            }
-        });
+    public void searchMovie(String movieTitle){
+        movieRepository.searchMovie(movieTitle);
     }
 
     public LiveData<List<Movie>> getMovies(){
@@ -55,18 +37,12 @@ public class MoviesViewModel extends AndroidViewModel {
         return movieRepository.getMovies();
     }
 
-    public LiveData<FetchingStatus> getFetchingDataStatus() {
-        return fetchingDataStatus;
+    public LiveData<Resource.State> getFetchingDataStatus() {
+        return movieRepository.getMoviesFetchState();
     }
 
     public LiveData<String> getMessage() {
-        return message;
-    }
-
-    public enum FetchingStatus {
-        LOADING,
-        SUCCESS,
-        FAILED
+        return movieRepository.getMoviesFetchStatusMessage();
     }
 
     public static class Factory implements ViewModelProvider.Factory {

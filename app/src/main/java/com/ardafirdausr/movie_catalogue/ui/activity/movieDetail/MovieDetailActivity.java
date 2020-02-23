@@ -6,11 +6,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.widget.Toolbar;
 
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,7 +22,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 

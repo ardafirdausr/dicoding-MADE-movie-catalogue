@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
+import com.ardafirdausr.movie_catalogue.repository.remote.movie.Resource;
 import com.ardafirdausr.movie_catalogue.ui.adapter.MovieAdapter;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class MoviesFragment extends Fragment
     private Button btRetry;
     private MoviesViewModel moviesViewModel;
     private SearchView svMovie;
+    private MovieAdapter movieAdapter;
 
     public MoviesFragment() { }
 
@@ -51,7 +53,9 @@ public class MoviesFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
+        initAdapter();
         initViewModel();
+        resetSearch();
     }
 
     @Override
@@ -80,6 +84,14 @@ public class MoviesFragment extends Fragment
         pbLoading = view.findViewById(R.id.pb_loading);
         btRetry = view.findViewById(R.id.bt_retry);
         btRetry.setOnClickListener(this);
+    }
+
+    private void initAdapter(){
+        movieAdapter = new MovieAdapter();
+    }
+
+    private void resetSearch(){
+        this.onQueryTextChange("");
     }
 
     private void initViewModel(){
@@ -120,16 +132,16 @@ public class MoviesFragment extends Fragment
 
     private void observeFetchingDataStatus(){
         moviesViewModel.getFetchingDataStatus()
-                .observe(getViewLifecycleOwner(), new Observer<MoviesViewModel.FetchingStatus>() {
+                .observe(getViewLifecycleOwner(), new Observer<Resource.State>() {
                     @Override
-                    public void onChanged(MoviesViewModel.FetchingStatus fetchingDataStatus) {
-                        if(fetchingDataStatus == MoviesViewModel.FetchingStatus.LOADING) {
+                    public void onChanged(Resource.State fetchingDataStatus) {
+                        if(fetchingDataStatus == Resource.State.LOADING) {
                             showLoadingState();
                         }
-                        else if(fetchingDataStatus == MoviesViewModel.FetchingStatus.FAILED){
+                        else if(fetchingDataStatus == Resource.State.FAILED){
                             showRetryButton();
                         }
-                        else if(fetchingDataStatus == MoviesViewModel.FetchingStatus.SUCCESS){
+                        else if(fetchingDataStatus == Resource.State.SUCCESS){
                             showMoviesList();
                         }
                     }
@@ -137,7 +149,6 @@ public class MoviesFragment extends Fragment
     }
 
     private void renderMovieList(List<Movie> movies){
-        MovieAdapter movieAdapter = new MovieAdapter();
         movieAdapter.setMovie(movies);
         movieAdapter.setOnItemClickCallback(new MovieAdapter.OnItemClickCallback() {
             @Override
@@ -187,11 +198,15 @@ public class MoviesFragment extends Fragment
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+        moviesViewModel.searchMovie(query);
+        movieAdapter.getFilter().filter(query);
+        svMovie.clearFocus();
+        return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        return false;
+        movieAdapter.getFilter().filter(newText);
+        return true;
     }
 }

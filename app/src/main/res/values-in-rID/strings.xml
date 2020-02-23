@@ -23,6 +23,7 @@
 
     <string name="setting_general">Umum</string>
     <string name="setting_language">Bahasa</string>
+    <string name="setting_language_summary">Ketika kamu merubah bahasa, data favorit akan hilang</string>
     <string name="setting_notification">Notifikasi</string>
     <string name="setting_daily_reminder">Pengingat Harian</string>
     <string name="setting_daily_reminder_summary">

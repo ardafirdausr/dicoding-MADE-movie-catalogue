@@ -3,6 +3,8 @@ package com.ardafirdausr.movie_catalogue.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,18 +20,22 @@ import java.util.List;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> implements Filterable {
 
+    private List<Movie> immutableMovies;
     private List<Movie> movies;
     private OnItemClickCallback onItemClickCallback;
 
     public MovieAdapter() {
         this.movies = new ArrayList<>();
+        this.immutableMovies = new ArrayList<>();
     }
 
     public void setMovie(List<Movie> movies) {
-        this.movies.clear();
+        if(this.movies != null) this.movies.clear();
         this.movies.addAll(movies);
+        if(this.immutableMovies != null) this.immutableMovies.clear();
+        this.immutableMovies.addAll(movies);
     }
 
     public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
@@ -59,6 +65,40 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public int getItemCount() {
         return movies.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filteredMovies;
+    }
+
+    private Filter filteredMovies = new Filter(){
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Movie> filtered = new ArrayList<>();
+            if(constraint == null || constraint.length() == 0){
+                filtered.addAll(immutableMovies);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for(Movie movie: immutableMovies){
+                     if(movie.getTitle().toLowerCase().contains(filterPattern)){
+                         filtered.add(movie);
+                     }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filtered;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            movies.clear();
+            movies.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+
+    };
 
     public interface OnItemClickCallback {
         void onClick(View view, Movie movieResponse);
