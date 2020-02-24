@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
@@ -87,7 +88,7 @@ public class NotificationIntentService extends IntentService {
 
 
     private void handleActionShowNotification(int notificationId, String title, String message) {
-        showNotification(notificationId, title, message);
+        showNotification(notificationId, title, message, null);
     }
 
     private void handleActionShowMovieReleaseNotification(final String title) {
@@ -108,7 +109,7 @@ public class NotificationIntentService extends IntentService {
                         List<MovieResponse> movies = response.body().getMovies();
                         for(MovieResponse movie: movies){
                             String message = movie.getTitle() + " " + getString(R.string.alarm_release_reminder_message);
-                            showNotification(c.incrementAndGet(), title, message);
+                            showNotification(c.incrementAndGet(), title, message, movie.getId());
                         }
                     }
                 }
@@ -122,7 +123,7 @@ public class NotificationIntentService extends IntentService {
             });
     }
 
-    private void showNotification(int notificationId, String title, String message) {
+    private void showNotification(int notificationId, String title, String message, @Nullable Long movieId) {
         String CHANNEL_ID = "Channel_1";
         String CHANNEL_NAME = "AlarmManager channel";
 

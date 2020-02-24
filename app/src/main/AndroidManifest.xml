@@ -3,6 +3,8 @@
     package="com.ardafirdausr.movie_catalogue">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <permission android:name="com.ardafirdausr.movie_catalogue.READ_DATABASE" android:protectionLevel="normal"/>
+    <permission android:name="com.dicoding.mynotesapp.WRITE_DATABASE" android:protectionLevel="normal"/>
 
     <application
         android:allowBackup="true"
@@ -12,9 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name=".provider.FavouriteMovieProvider"
+            android:authorities="com.ardafirdausr.movie_catalogue"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.ardafirdausr.movie_catalogue.READ_DATABASE"
+            android:writePermission="com.dicoding.mynotesapp.WRITE_DATABASE"></provider>
+
         <service
             android:name=".service.NotificationIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <receiver
             android:name=".receiver.AlarmReceiver"

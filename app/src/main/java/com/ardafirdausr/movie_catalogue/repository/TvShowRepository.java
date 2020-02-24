@@ -3,7 +3,6 @@ package com.ardafirdausr.movie_catalogue.repository;
 import android.app.Application;
 import android.os.AsyncTask;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import com.ardafirdausr.movie_catalogue.repository.local.MovieCatalogueDatabase;
@@ -11,6 +10,7 @@ import com.ardafirdausr.movie_catalogue.repository.local.dao.TvShowDao;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.TvShow;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.MovieApiClient;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.MovieApiInterface;
+import com.ardafirdausr.movie_catalogue.repository.remote.movie.Resource;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.Util;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.response.TvShowListResponse;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.response.TvShowResponse;
@@ -28,10 +28,16 @@ public class TvShowRepository {
     private static TvShowRepository tvShowRepositoryInstance;
     private MovieApiInterface movieApi;
     private TvShowDao tvShowDao;
+    private Resource<List<TvShow>> tvShows;
+    private boolean isListRefreshed;
+    private List<Long> refreshedTvShowIds;
 
     private TvShowRepository(Application application){
         movieApi = MovieApiClient.getClient().create(MovieApiInterface.class);
         tvShowDao = MovieCatalogueDatabase.getInstance(application).getTvShowDao();
+        tvShows = new Resource<>();
+        isListRefreshed = false;
+        refreshedTvShowIds = new ArrayList<>();
     }
 
     public static synchronized TvShowRepository getInstance(Application application){
@@ -42,16 +48,56 @@ public class TvShowRepository {
     }
 
     public LiveData<List<TvShow>> getTvShows(){
+        if(!isListRefreshed) fetchTvOnTheAir();
+        tvShows.setData(tvShowDao.getTvShows());
         return tvShowDao.getTvShows();
+    }
+
+    public void searchTvShow(String tvShowTitle){
+        tvShows.setState(Resource.State.LOADING);
+        tvShows.setMessage("Loading...");
+        movieApi.searchTvShow(Util.getApiKey(), Util.getCurrentLanguage(), tvShowTitle)
+            .enqueue(new Callback<TvShowListResponse>() {
+                @Override
+                public void onResponse(Call<TvShowListResponse> call, Response<TvShowListResponse> response) {
+                    if(response.body() != null){
+                        tvShows.setState(Resource.State.SUCCESS);
+                        tvShows.setMessage("Success");
+
+                        List<TvShowResponse> tvShowResponses = response.body().getTvShows();
+                        List<TvShow> tvShows = transformTvShowsResponseToTvShowEntities(tvShowResponses);
+                        new InsertTvShowsAsyncTask(tvShowDao).execute(tvShows);
+
+                    } else {
+                        tvShows.setState(Resource.State.SUCCESS);
+                        tvShows.setMessage("");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TvShowListResponse> call, Throwable t) {
+                    tvShows.setState(Resource.State.SUCCESS);
+                    tvShows.setMessage("");
+                }
+            });
     }
 
     public LiveData<List<TvShow>> getFavouriteTvShows(){
         return tvShowDao.getFavouriteTvShows();
     }
 
-    public LiveData<TvShow> getTvShow(long tvShowId){ return tvShowDao.getTvShow(tvShowId); }
+    public LiveData<Resource.State> getTvShowsFetchState(){
+        return tvShows.getState();
+    }
 
-    public int getTvShowCount(){ return tvShowDao.countTvShows(); }
+    public LiveData<String> getTvShowsFetchStatusMessage(){
+        return tvShows.getMessage();
+    }
+
+    public LiveData<TvShow> getTvShow(long tvShowId){
+        if(!refreshedTvShowIds.contains(tvShowId)) fetchTvShow(tvShowId);
+        return tvShowDao.getTvShow(tvShowId);
+    }
 
     public void addTvShowToFavourite(long tvShowId){
         new AddTvShowToFavouriteAsyncTask(tvShowDao).execute(tvShowId);
@@ -62,8 +108,9 @@ public class TvShowRepository {
     }
 
 
-    public void fetchTvOnTheAir(@Nullable final OnFetchCallback onFetchCallback){
-        if(onFetchCallback != null) onFetchCallback.onLoad();
+    public void fetchTvOnTheAir(){
+        tvShows.setState(Resource.State.LOADING);
+        tvShows.setMessage("Loading...");
         movieApi.getTvOnTheAir(Util.getApiKey(), Util.getCurrentLanguage(), 1)
                 .enqueue(new Callback<TvShowListResponse>() {
 
@@ -71,22 +118,54 @@ public class TvShowRepository {
                     @Override
                     public void onResponse(Call<TvShowListResponse> call, Response<TvShowListResponse> response) {
                         if(response.body() != null){
-                            if(onFetchCallback != null) onFetchCallback.onSuccess();
+                            tvShows.setState(Resource.State.SUCCESS);
+                            tvShows.setMessage("Success");
+                            isListRefreshed = true;
                             List<TvShowResponse> tvShowsResponse = response.body().getTvShows();
                             List<TvShow> tvShows = transformTvShowsResponseToTvShowEntities(tvShowsResponse);
-                            new InsertMoviesAsyncTask(tvShowDao).execute(tvShows);
+                            new InsertTvShowsAsyncTask(tvShowDao).execute(tvShows);
                         }
                         else {
-                            if(onFetchCallback != null) onFetchCallback.onFailed("Data not available");
+                            tvShows.setState(Resource.State.FAILED);
+                            tvShows.setMessage("Failed to load data");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<TvShowListResponse> call, Throwable t) {
-                        if(onFetchCallback != null) onFetchCallback.onFailed("Failed to load data");
+                        tvShows.setState(Resource.State.FAILED);
+                        tvShows.setMessage("Failed to load data");
                     }
                 });
 
+    }
+
+    public void fetchTvShow(final long tvShowId){
+        tvShows.setState(Resource.State.LOADING);
+        tvShows.setMessage("Loading...");
+        movieApi.getTvShow(tvShowId, Util.getApiKey(), Util.getCurrentLanguage())
+                .enqueue(new Callback<TvShowResponse>() {
+                    @Override
+                    public void onResponse(Call<TvShowResponse> call, Response<TvShowResponse> response) {
+                        if(response.body() != null){
+                            tvShows.setState(Resource.State.SUCCESS);
+                            tvShows.setMessage("Success");
+                            refreshedTvShowIds.add(tvShowId);
+                            TvShowResponse tvShowResponse = response.body();
+                            TvShow tvShow = transformTvShowResponseToTvShowEntity(tvShowResponse);
+                            new InsertTvShowAsyncTask(tvShowDao).execute(tvShow);
+                        } else {
+                            tvShows.setState(Resource.State.FAILED);
+                            tvShows.setMessage("Failed to load data");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TvShowResponse> call, Throwable t) {
+                        tvShows.setState(Resource.State.FAILED);
+                        tvShows.setMessage("Failed to load data");
+                    }
+                });
     }
 
     private List<TvShow> transformTvShowsResponseToTvShowEntities(List<TvShowResponse> tvShowsResponse){
@@ -109,17 +188,32 @@ public class TvShowRepository {
         return tvShow;
     }
 
-    private static class InsertMoviesAsyncTask extends AsyncTask<List<TvShow>, Void, Void> {
+    private static class InsertTvShowsAsyncTask extends AsyncTask<List<TvShow>, Void, Void> {
 
         private TvShowDao tvShowDao;
 
-        private InsertMoviesAsyncTask(TvShowDao tvShowDao){
+        private InsertTvShowsAsyncTask(TvShowDao tvShowDao){
             this.tvShowDao = tvShowDao;
         }
 
         @Override
-        protected Void doInBackground (List<TvShow>... movies) {
-            tvShowDao.addTvShows(movies[0]);
+        protected Void doInBackground (List<TvShow>... tvShows) {
+            tvShowDao.addTvShows(tvShows[0]);
+            return null;
+        }
+    }
+
+    private static class InsertTvShowAsyncTask extends AsyncTask<TvShow, Void, Void> {
+
+        private TvShowDao tvShowDao;
+
+        private InsertTvShowAsyncTask(TvShowDao tvShowDao){
+            this.tvShowDao = tvShowDao;
+        }
+
+        @Override
+        protected Void doInBackground (TvShow... tvShows) {
+            tvShowDao.addTvShow(tvShows[0]);
             return null;
         }
     }
@@ -156,9 +250,4 @@ public class TvShowRepository {
         }
     }
 
-    public interface OnFetchCallback {
-        void onLoad();
-        void onSuccess();
-        void onFailed(String errorMessage);
-    }
 }

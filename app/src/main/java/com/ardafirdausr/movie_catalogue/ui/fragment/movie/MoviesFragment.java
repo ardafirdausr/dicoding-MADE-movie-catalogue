@@ -2,6 +2,7 @@ package com.ardafirdausr.movie_catalogue.ui.fragment.movie;
 
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +32,8 @@ import com.ardafirdausr.movie_catalogue.ui.adapter.MovieAdapter;
 import java.util.List;
 
 public class MoviesFragment extends Fragment
-        implements LifecycleOwner, View.OnClickListener, SearchView.OnQueryTextListener {
+        implements LifecycleOwner, View.OnClickListener,
+        SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
     private RecyclerView rvMovies;
     private TextView tvState;
@@ -55,7 +57,6 @@ public class MoviesFragment extends Fragment
         bindView(view);
         initAdapter();
         initViewModel();
-        resetSearch();
     }
 
     @Override
@@ -70,6 +71,7 @@ public class MoviesFragment extends Fragment
         MenuItem searchItem = menu.findItem(R.id.action_search);
         svMovie = (SearchView) searchItem.getActionView();
         svMovie.setOnQueryTextListener(this);
+        searchItem.setOnActionExpandListener(this);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -88,10 +90,6 @@ public class MoviesFragment extends Fragment
 
     private void initAdapter(){
         movieAdapter = new MovieAdapter();
-    }
-
-    private void resetSearch(){
-        this.onQueryTextChange("");
     }
 
     private void initViewModel(){
@@ -142,6 +140,7 @@ public class MoviesFragment extends Fragment
                             showRetryButton();
                         }
                         else if(fetchingDataStatus == Resource.State.SUCCESS){
+                            if(svMovie != null) svMovie.clearFocus();
                             showMoviesList();
                         }
                     }
@@ -198,15 +197,28 @@ public class MoviesFragment extends Fragment
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        moviesViewModel.searchMovie(query);
-        movieAdapter.getFilter().filter(query);
-        svMovie.clearFocus();
+        if(!query.trim().equals("") && query.length() > 0) {
+            moviesViewModel.searchMovie(query);
+        }
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        movieAdapter.getFilter().filter(newText);
+        if(newText.length() > 2) movieAdapter.getFilter().filter(newText);
+        return true;
+    }
+
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        movieAdapter.getFilter().filter("");
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        movieAdapter.getFilter().filter("");
         return true;
     }
 }

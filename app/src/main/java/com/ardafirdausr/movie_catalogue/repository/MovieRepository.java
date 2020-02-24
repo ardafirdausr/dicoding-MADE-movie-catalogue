@@ -75,17 +75,13 @@ public class MovieRepository {
         new AddMovieToFavouriteAsyncTask(movieDao).execute(movieId);
     }
 
-    public int getMovieCount(){
-        return movieDao.countMovies();
-    }
-
     public void removeMovieFromFavourite(long movieId){
         new RemoveMovieFromFavouriteAsyncTask(movieDao).execute(movieId);
     }
 
     public void fetchMovie(final long movieId){
-        movies.setState(Resource.State.LOADING);
-        movies.setMessage("Loading...");
+//        movies.setState(Resource.State.LOADING);
+//        movies.setMessage("Loading...");
         movieApi.getMovie(movieId, Util.getApiKey(), Util.getCurrentLanguage())
                 .enqueue(new Callback<MovieResponse>() {
 
@@ -93,10 +89,10 @@ public class MovieRepository {
                     @Override
                     public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                         if (response.body() != null) {
-                            refreshedMovieIds.add(movieId);
-                            movies.setState(Resource.State.SUCCESS);
-                            movies.setMessage("Success");
+//                            movies.setState(Resource.State.SUCCESS);
+//                            movies.setMessage("Success");
 
+                            refreshedMovieIds.add(movieId);
                             MovieResponse movieResponse = response.body();
                             Movie movie = transformMovieResponseToMovieEntity(movieResponse);
                             Movie presistedMovie = movieDao.getMovie(movieId).getValue();
@@ -107,16 +103,16 @@ public class MovieRepository {
                             new InsertMovieAsyncTask(movieDao).execute(movie);
                         }
                         else {
-                            movies.setState(Resource.State.FAILED);
-                            movies.setMessage("Failed to load data");
+//                            movies.setState(Resource.State.FAILED);
+//                            movies.setMessage("Failed to load data");
                         }
                     }
 
                     @EverythingIsNonNull
                     @Override
                     public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        movies.setState(Resource.State.FAILED);
-                        movies.setMessage("Failed to load data");
+//                        movies.setState(Resource.State.FAILED);
+//                        movies.setMessage("Failed to load data");
                     }
                 });
     }
@@ -155,8 +151,8 @@ public class MovieRepository {
     }
 
     public void searchMovie(String movieTitle){
-//        movies.setState(Resource.State.LOADING);
-//        movies.setMessage("Loading...");
+        movies.setState(Resource.State.LOADING);
+        movies.setMessage("Loading...");
         movieApi.searchMovie(Util.getApiKey(), Util.getCurrentLanguage(), movieTitle)
                 .enqueue(new Callback<MovieListResponse>() {
 
@@ -164,29 +160,24 @@ public class MovieRepository {
                     @Override
                     public void onResponse(Call<MovieListResponse> call, Response<MovieListResponse> response) {
                         if (response.body() != null) {
-//                            movies.setState(Resource.State.SUCCESS);
-//                            movies.setMessage("Success");
+                            movies.setState(Resource.State.SUCCESS);
+                            movies.setMessage("Success");
 
                             List<MovieResponse> moviesResponse = response.body().getMovies();
                             List<Movie> movies = transformMoviesResponseToMovieEntities(moviesResponse);
-                            for(Movie movie: movies){
-                                Log.d("TAG", movie.getTitle());
-                            }
                             new InsertMoviesAsyncTask(movieDao).execute(movies);
                         }
                         else {
-                            Log.d("TAG", ":Jancok:");
-//                            movies.setState(Resource.State.FAILED);
-//                            movies.setMessage("Failed to load data");
+                            movies.setState(Resource.State.SUCCESS);
+                            movies.setMessage("");
                         }
                     }
 
                     @EverythingIsNonNull
                     @Override
                     public void onFailure(Call<MovieListResponse> call, Throwable t) {
-                        Log.d("TAG", t.getMessage());
-//                        movies.setState(Resource.State.FAILED);
-//                        movies.setMessage("Failed to load data");
+                        movies.setState(Resource.State.SUCCESS);
+                        movies.setMessage("");
                     }
                 });
     }
@@ -287,12 +278,6 @@ public class MovieRepository {
             movieDao.removeMovieFromFavourite(movieId);
             return null;
         }
-    }
-
-    public interface OnFetchCallback {
-        void onLoad();
-        void onSuccess();
-        void onFailed(String errorMessage);
     }
 
 }

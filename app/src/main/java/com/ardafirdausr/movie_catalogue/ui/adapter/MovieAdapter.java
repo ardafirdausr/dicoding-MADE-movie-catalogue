@@ -32,10 +32,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     public void setMovie(List<Movie> movies) {
-        if(this.movies != null) this.movies.clear();
-        this.movies.addAll(movies);
-        if(this.immutableMovies != null) this.immutableMovies.clear();
-        this.immutableMovies.addAll(movies);
+        if(this.movies != null) {
+            this.movies.clear();
+            this.movies.addAll(movies);
+        }
+        if(this.immutableMovies != null) {
+            this.immutableMovies.clear();
+            this.immutableMovies.addAll(movies);
+        }
     }
 
     public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {

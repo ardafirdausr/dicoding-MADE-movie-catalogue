@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface TvShowDao {
 
-    @Query("SELECT * FROM tv_shows")
+    @Query("SELECT * FROM tv_shows ORDER BY firstAirDate DESC")
     LiveData<List<TvShow>> getTvShows();
 
     @Query("SELECT * FROM tv_shows WHERE isFavourite = 1")
@@ -22,11 +22,11 @@ public interface TvShowDao {
     @Query("SELECT * FROM tv_shows WHERE id=:id")
     LiveData<TvShow> getTvShow(long id);
 
-    @Query("SELECT COUNT(*) FROM tv_shows")
-    int countTvShows();
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void addTvShows(List<TvShow> tvShows);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void addTvShow(TvShow tvShow);
 
     @Query("UPDATE tv_shows SET isFavourite = 1 WHERE id = :tvShowId")
     void addTvShowToFavourite(long tvShowId);

@@ -7,12 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.TvShow;
+import com.ardafirdausr.movie_catalogue.repository.remote.movie.Resource;
 import com.ardafirdausr.movie_catalogue.ui.adapter.TvShowAdapter;
 
 import java.util.List;
@@ -33,14 +36,16 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class TvShowsFragment extends Fragment
-        implements View.OnClickListener, SearchView.OnQueryTextListener{
+        implements LifecycleOwner, View.OnClickListener,
+        SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener{
 
     private RecyclerView rvTvShows;
     private TextView tvState;
     private ProgressBar pbLoading;
     private Button btRetry;
     private TvShowsViewModel tvShowsViewModel;
-    private SearchView svMovie;
+    private SearchView svTvShow;
+    private TvShowAdapter tvShowAdapter;
 
     public TvShowsFragment() { }
 
@@ -55,6 +60,7 @@ public class TvShowsFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
+        initAdapter();
         initViewModel();
     }
 
@@ -68,8 +74,9 @@ public class TvShowsFragment extends Fragment
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.main_activity_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        svMovie = (SearchView) searchItem.getActionView();
-        svMovie.setOnQueryTextListener(this);
+        svTvShow = (SearchView) searchItem.getActionView();
+        svTvShow.setOnQueryTextListener(this);
+        searchItem.setOnActionExpandListener(this);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -79,6 +86,10 @@ public class TvShowsFragment extends Fragment
         pbLoading = view.findViewById(R.id.pb_loading);
         btRetry = view.findViewById(R.id.bt_retry);
         btRetry.setOnClickListener(this);
+    }
+
+    private void initAdapter(){
+        tvShowAdapter = new TvShowAdapter();
     }
 
     private void initViewModel(){
@@ -105,6 +116,7 @@ public class TvShowsFragment extends Fragment
         tvShowsViewModel.getTvShows().observe(getViewLifecycleOwner(), new Observer<List<TvShow>>() {
             @Override
             public void onChanged(List<TvShow> tvShows) {
+                Log.d("TAG", "TVSHOW: " + tvShows.size());
                 renderTvShowList(tvShows);
             }
         });
@@ -113,17 +125,17 @@ public class TvShowsFragment extends Fragment
     private void observeFetchingDataStatus(){
         tvShowsViewModel.getFetchingDataStatus().observe(
                 getViewLifecycleOwner(),
-                new Observer<TvShowsViewModel.FetchingStatus>() {
+                new Observer<Resource.State>() {
                     @Override
-                    public void onChanged(TvShowsViewModel.FetchingStatus fetchingStatus) {
-                        if(fetchingStatus == TvShowsViewModel.FetchingStatus.LOADING){
+                    public void onChanged(Resource.State fetchingStatus) {
+                        Log.d("TAG", "TVSHOW: " + fetchingStatus);
+                        if(fetchingStatus == Resource.State.LOADING){
                             showLoadingState();
-                        }
-                        else if(fetchingStatus == TvShowsViewModel.FetchingStatus.SUCCESS){
-                            showMoviesList();
-                        }
-                        else if(fetchingStatus == TvShowsViewModel.FetchingStatus.FAILED){
+                        } else if(fetchingStatus == Resource.State.FAILED){
                             showRetryButton();
+                        } else if(fetchingStatus == Resource.State.SUCCESS){
+                            if(svTvShow != null) svTvShow.clearFocus();
+                            showMoviesList();
                         }
                     }
                 }
@@ -140,9 +152,8 @@ public class TvShowsFragment extends Fragment
     }
 
     private void renderTvShowList(List<TvShow> tvShows){
-        TvShowAdapter movieAdapter = new TvShowAdapter();
-        movieAdapter.setTvShows(tvShows);
-        movieAdapter.setOnItemClickCallback(new TvShowAdapter.OnItemClickCallback() {
+        tvShowAdapter.setTvShows(tvShows);
+        tvShowAdapter.setOnItemClickCallback(new TvShowAdapter.OnItemClickCallback() {
             @Override
             public void onClick(View view, TvShow tvShow) {
                 TvShowsFragmentDirections.ActionNavigationTvShowsToTvShowDetailActivity toTvShowDetailActivity
@@ -153,7 +164,7 @@ public class TvShowsFragment extends Fragment
 
             }
         });
-        rvTvShows.setAdapter(movieAdapter);
+        rvTvShows.setAdapter(tvShowAdapter);
         rvTvShows.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
@@ -191,11 +202,27 @@ public class TvShowsFragment extends Fragment
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        if(!query.trim().equals("") && query.length() > 0){
+            tvShowsViewModel.searchTvShow(query);
+        }
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        if(newText.length() > 2) tvShowAdapter.getFilter().filter(newText);
         return false;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        tvShowAdapter.getFilter().filter("");
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        tvShowAdapter.getFilter().filter("");
+        return true;
     }
 }

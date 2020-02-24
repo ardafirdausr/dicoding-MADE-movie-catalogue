@@ -3,6 +3,7 @@ package com.ardafirdausr.movie_catalogue.repository.remote.movie;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.response.MovieListResponse;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.response.MovieResponse;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.response.TvShowListResponse;
+import com.ardafirdausr.movie_catalogue.repository.remote.movie.response.TvShowResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -41,5 +42,17 @@ public interface MovieApiInterface {
             @Query("api_key") String apiKey,
             @Query("language") String language,
             @Query("page") int page);
+
+    @GET("search/tv")
+    Call<TvShowListResponse> searchTvShow(
+            @Query("api_key") String apiKey,
+            @Query("language") String language,
+            @Query("query") String tvShowTitle);
+
+    @GET("tv/{tv_id}")
+    Call<TvShowResponse> getTvShow(
+            @Path("tv_id") long tvShowId,
+            @Query("api_key") String apiKey,
+            @Query("language") String language);
 
 }

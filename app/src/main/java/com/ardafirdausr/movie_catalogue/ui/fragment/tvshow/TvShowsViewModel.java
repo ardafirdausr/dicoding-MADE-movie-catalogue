@@ -5,66 +5,40 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ardafirdausr.movie_catalogue.repository.TvShowRepository;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.TvShow;
+import com.ardafirdausr.movie_catalogue.repository.remote.movie.Resource;
 
 import java.util.List;
 
 public class TvShowsViewModel extends AndroidViewModel {
 
     private TvShowRepository tvShowRepository;
-    private MutableLiveData<FetchingStatus> fetchingDataStatus;
-    private MutableLiveData<String> message;
 
     private TvShowsViewModel(@NonNull Application application) {
         super(application);
-        fetchingDataStatus = new MutableLiveData<>(FetchingStatus.SUCCESS);
-        message = new MutableLiveData<>();
         tvShowRepository = TvShowRepository.getInstance(application);
     }
 
     public void fetchingTvShows(){
-        tvShowRepository.fetchTvOnTheAir(new TvShowRepository.OnFetchCallback(){
-
-            @Override
-            public void onLoad(){
-                fetchingDataStatus.setValue(FetchingStatus.LOADING);
-                message.setValue("Loading...");
-            }
-
-            @Override
-            public void onSuccess() {
-                fetchingDataStatus.setValue(FetchingStatus.SUCCESS);
-                message.setValue("Success");
-            }
-
-            @Override
-            public void onFailed(String errorMessage) {
-                fetchingDataStatus.setValue(FetchingStatus.FAILED);
-                message.setValue(errorMessage);
-            }
-        });
+        tvShowRepository.fetchTvOnTheAir();
     }
 
     public LiveData<List<TvShow>> getTvShows() {
-        if(tvShowRepository.getTvShowCount() < 1) fetchingTvShows();
         return tvShowRepository.getTvShows();
     }
 
-    public LiveData<FetchingStatus> getFetchingDataStatus() { return fetchingDataStatus; }
-
-    public LiveData<String> getMessage() {
-        return message;
+    public void searchTvShow(String tvShowTitle){
+        tvShowRepository.searchTvShow(tvShowTitle);
     }
 
-    public enum FetchingStatus {
-        LOADING,
-        SUCCESS,
-        FAILED
+    public LiveData<Resource.State> getFetchingDataStatus() { return tvShowRepository.getTvShowsFetchState(); }
+
+    public LiveData<String> getMessage() {
+        return tvShowRepository.getTvShowsFetchStatusMessage();
     }
 
     public static class Factory implements ViewModelProvider.Factory {

@@ -33,7 +33,6 @@ public class MoviesViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Movie>> getMovies(){
-        if(movieRepository.getMovieCount() < 1) fetchMovies();
         return movieRepository.getMovies();
     }
 
