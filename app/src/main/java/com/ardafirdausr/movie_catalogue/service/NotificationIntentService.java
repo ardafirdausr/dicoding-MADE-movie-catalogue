@@ -4,6 +4,8 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.Context;
 import android.media.RingtoneManager;
@@ -21,6 +23,8 @@ import com.ardafirdausr.movie_catalogue.repository.remote.movie.MovieApiClient;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.MovieApiInterface;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.response.MovieListResponse;
 import com.ardafirdausr.movie_catalogue.repository.remote.movie.response.MovieResponse;
+import com.ardafirdausr.movie_catalogue.ui.activity.MainActivity;
+import com.ardafirdausr.movie_catalogue.ui.activity.movieDetail.MovieDetailActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -88,7 +92,7 @@ public class NotificationIntentService extends IntentService {
 
 
     private void handleActionShowNotification(int notificationId, String title, String message) {
-        showNotification(notificationId, title, message, null);
+        showNotification(notificationId, title, message, 0);
     }
 
     private void handleActionShowMovieReleaseNotification(final String title) {
@@ -123,9 +127,30 @@ public class NotificationIntentService extends IntentService {
             });
     }
 
-    private void showNotification(int notificationId, String title, String message, @Nullable Long movieId) {
+    private void showNotification(int notificationId, String title, String message, long movieId) {
         String CHANNEL_ID = "Channel_1";
         String CHANNEL_NAME = "AlarmManager channel";
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent intent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        if(movieId != 0) {
+            notificationIntent = new Intent(this, MovieDetailActivity.class);
+            notificationIntent.putExtra("movieId", movieId);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplication());
+            // Adds the back stack for the Intent (but not the Intent itself)
+            stackBuilder.addParentStack(MainActivity.class);
+            // Adds the Intent that starts the Activity to the top of the stack
+            stackBuilder.addNextIntentWithParentStack(notificationIntent);
+            int requestCode = (int) movieId;
+            intent = stackBuilder.getPendingIntent(requestCode,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+
 
         NotificationManager notificationManagerCompat = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -133,6 +158,8 @@ public class NotificationIntentService extends IntentService {
                 .setSmallIcon(R.drawable.ic_movie_black_24dp)
                 .setContentTitle(title)
                 .setContentText(message)
+                .setContentIntent(intent)
+                .setAutoCancel(true)
                 .setColor(ContextCompat.getColor(this, android.R.color.transparent))
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                 .setSound(alarmSound);

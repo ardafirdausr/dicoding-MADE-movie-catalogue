@@ -96,6 +96,7 @@ public class TvShowDetailActivity extends AppCompatActivity {
             tvShowDetailViewModel.getTvShow(tvShowId).observe(this, new Observer<TvShow>() {
                 @Override
                 public void onChanged(final TvShow tvShow) {
+                    if(tvShow == null) return;
                     setActionBarTitle(tvShow.getTitle());
                     tvTitle.setText(tvShow.getTitle());
                     tvReleaseDate.setText(tvShow.getFirstAirDate());

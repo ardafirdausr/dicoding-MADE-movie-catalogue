@@ -116,7 +116,6 @@ public class TvShowsFragment extends Fragment
         tvShowsViewModel.getTvShows().observe(getViewLifecycleOwner(), new Observer<List<TvShow>>() {
             @Override
             public void onChanged(List<TvShow> tvShows) {
-                Log.d("TAG", "TVSHOW: " + tvShows.size());
                 renderTvShowList(tvShows);
             }
         });
@@ -128,7 +127,6 @@ public class TvShowsFragment extends Fragment
                 new Observer<Resource.State>() {
                     @Override
                     public void onChanged(Resource.State fetchingStatus) {
-                        Log.d("TAG", "TVSHOW: " + fetchingStatus);
                         if(fetchingStatus == Resource.State.LOADING){
                             showLoadingState();
                         } else if(fetchingStatus == Resource.State.FAILED){

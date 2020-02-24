@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -106,10 +107,11 @@ public class MovieDetailActivity extends AppCompatActivity {
     private void renderExtraMovie(){
         final Bundle intentExtra = getIntent().getExtras();
         if(intentExtra != null){
-            long movieId = MovieDetailActivityArgs.fromBundle(intentExtra).getMovieId();
+            final long movieId = MovieDetailActivityArgs.fromBundle(intentExtra).getMovieId();
             movieDetailViewModel.getMovie(movieId).observe(this, new Observer<Movie>() {
                 @Override
                 public void onChanged(final Movie movie) {
+                    if(movie == null) return;
                     updateFavouriteWidget();
                     setActionBarTitle(movie.getTitle());
                     tvTitle.setText(movie.getTitle());
