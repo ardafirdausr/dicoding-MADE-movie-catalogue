@@ -46,6 +46,7 @@ public class TvShowsFragment extends Fragment
     private TvShowsViewModel tvShowsViewModel;
     private SearchView svTvShow;
     private TvShowAdapter tvShowAdapter;
+    private String searchQuery;
 
     public TvShowsFragment() { }
 
@@ -86,6 +87,7 @@ public class TvShowsFragment extends Fragment
         pbLoading = view.findViewById(R.id.pb_loading);
         btRetry = view.findViewById(R.id.bt_retry);
         btRetry.setOnClickListener(this);
+        searchQuery = "";
     }
 
     private void initAdapter(){
@@ -162,6 +164,7 @@ public class TvShowsFragment extends Fragment
 
             }
         });
+        if(searchQuery.length() > 0) tvShowAdapter.getFilter().filter(searchQuery);
         rvTvShows.setAdapter(tvShowAdapter);
         rvTvShows.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -201,6 +204,7 @@ public class TvShowsFragment extends Fragment
     @Override
     public boolean onQueryTextSubmit(String query) {
         if(!query.trim().equals("") && query.length() > 0){
+            searchQuery = query;
             tvShowsViewModel.searchTvShow(query);
         }
         return false;

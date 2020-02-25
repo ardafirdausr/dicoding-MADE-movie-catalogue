@@ -1,43 +1,43 @@
-package com.ardafirdausr.movie_catalogue.repository.local.entity;
+package com.ardafirdausr.favourite.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import android.content.ContentValues;
+public class Movie implements Parcelable {
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import java.io.Serializable;
-
-@Entity(tableName = "movies")
-public class Movie implements Serializable {
-
-    @PrimaryKey
-    @ColumnInfo(name = "id")
     private long id;
-
-    @ColumnInfo(name = "title")
     private String title;
-
-    @ColumnInfo(name = "description")
     private String description;
-
-    @ColumnInfo(name = "vote")
     private double vote;
-
-    @ColumnInfo(name = "release_date")
     private String releaseDate;
-
-    @ColumnInfo(name = "imageUrl")
     private String imageUrl;
-
-    @ColumnInfo(name = "coverUrl")
     private String coverUrl;
-
-    @ColumnInfo(name = "isFavourite")
     private boolean isFavourite;
+
+    public Movie(){}
+
+    protected Movie(Parcel in) {
+        id = in.readLong();
+        title = in.readString();
+        description = in.readString();
+        vote = in.readDouble();
+        releaseDate = in.readString();
+        imageUrl = in.readString();
+        coverUrl = in.readString();
+        isFavourite = in.readByte() != 0;
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -103,20 +103,20 @@ public class Movie implements Serializable {
         isFavourite = favourite;
     }
 
-    //TODO: seperate column name to variable
-    @NonNull
-    public static Movie fromContentValues(@Nullable ContentValues values) {
-        final Movie movie = new Movie();
-        if (values != null) {
-            movie.id = values.getAsLong("id");
-            movie.title = values.getAsString("title ");
-            movie.description = values.getAsString("description");
-            movie.vote = values.getAsDouble("vote");
-            movie.releaseDate = values.getAsString("releaseDate");
-            movie.imageUrl = values.getAsString("imageUrl");
-            movie.coverUrl = values.getAsString("coverUrl");
-            movie.isFavourite = values.getAsBoolean("isFavourite");
-        }
-        return movie;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeDouble(vote);
+        dest.writeString(releaseDate);
+        dest.writeString(imageUrl);
+        dest.writeString(coverUrl);
+        dest.writeByte((byte) (isFavourite ? 1 : 0));
     }
 }

@@ -2,7 +2,6 @@ package com.ardafirdausr.movie_catalogue.ui.fragment.movie;
 
 import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +41,7 @@ public class MoviesFragment extends Fragment
     private MoviesViewModel moviesViewModel;
     private SearchView svMovie;
     private MovieAdapter movieAdapter;
+    private String searchQuery;
 
     public MoviesFragment() { }
 
@@ -86,6 +86,7 @@ public class MoviesFragment extends Fragment
         pbLoading = view.findViewById(R.id.pb_loading);
         btRetry = view.findViewById(R.id.bt_retry);
         btRetry.setOnClickListener(this);
+        searchQuery = "";
     }
 
     private void initAdapter(){
@@ -160,6 +161,7 @@ public class MoviesFragment extends Fragment
 
             }
         });
+        if(searchQuery.length() > 0) movieAdapter.getFilter().filter(searchQuery);
         rvMovies.setAdapter(movieAdapter);
         rvMovies.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -197,9 +199,8 @@ public class MoviesFragment extends Fragment
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        if(!query.trim().equals("") && query.length() > 0) {
-            moviesViewModel.searchMovie(query);
-        }
+        if(query.length() > 0) moviesViewModel.searchMovie(query);
+        searchQuery = query;
         return true;
     }
 

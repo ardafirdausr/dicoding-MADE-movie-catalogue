@@ -8,7 +8,6 @@ import androidx.appcompat.widget.Toolbar;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
