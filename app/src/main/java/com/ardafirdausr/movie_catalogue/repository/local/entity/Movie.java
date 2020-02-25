@@ -109,7 +109,7 @@ public class Movie implements Serializable {
         final Movie movie = new Movie();
         if (values != null) {
             movie.id = values.getAsLong("id");
-            movie.title = values.getAsString("title ");
+            movie.title = values.getAsString("title");
             movie.description = values.getAsString("description");
             movie.vote = values.getAsDouble("vote");
             movie.releaseDate = values.getAsString("releaseDate");
