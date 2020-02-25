@@ -30,5 +30,6 @@ public class DatabaseContract {
                 .authority(AUTHORITY)
                 .appendPath(TABLE_NAME)
                 .build();
+
     }
 }

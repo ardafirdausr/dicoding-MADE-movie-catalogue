@@ -1,7 +1,11 @@
 package com.ardafirdausr.favourite.entity;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class Movie implements Parcelable {
 
@@ -118,5 +122,22 @@ public class Movie implements Parcelable {
         dest.writeString(imageUrl);
         dest.writeString(coverUrl);
         dest.writeByte((byte) (isFavourite ? 1 : 0));
+    }
+
+    //TODO: seperate column name to variable
+    @NonNull
+    public static ContentValues toContentValues(@Nullable Movie movie) {
+        final ContentValues contentValues = new ContentValues();
+        if (movie != null) {
+            contentValues.put("id", movie.getId());
+            contentValues.put("title", movie.getTitle());
+            contentValues.put("description", movie.getDescription());
+            contentValues.put("vote", movie.getVote());
+            contentValues.put("releaseDate", movie.getReleaseDate());
+            contentValues.put("imageUrl", movie.getImageUrl());
+            contentValues.put("coverUrl", movie.getCoverUrl());
+            contentValues.put("isFavourite", movie.getIsFavourite());
+        }
+        return contentValues;
     }
 }

@@ -5,8 +5,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.widget.Toolbar;
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +14,7 @@ import android.widget.Toast;
 
 import com.ardafirdausr.movie_catalogue.R;
 import com.ardafirdausr.movie_catalogue.repository.local.entity.Movie;
-import com.ardafirdausr.movie_catalogue.ui.widget.FavouriteMoviesWidget;
+import com.ardafirdausr.movie_catalogue.service.NotifyWidgetIntentService;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -93,16 +91,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void updateFavouriteWidget(){
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
-        int[] movieCatalogueWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(
-                getPackageName(),
-                FavouriteMoviesWidget.class.getName()));
-        if(movieCatalogueWidgetIds.length > 0){
-            appWidgetManager.notifyAppWidgetViewDataChanged(movieCatalogueWidgetIds, R.id.stack_view);
-        }
-    }
-
     private void renderExtraMovie(){
         final Bundle intentExtra = getIntent().getExtras();
         if(intentExtra != null){
@@ -111,7 +99,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(final Movie movie) {
                     if(movie == null) return;
-                    updateFavouriteWidget();
+                    NotifyWidgetIntentService.startActionNotifyFavouriteWidget(getApplicationContext());
                     setActionBarTitle(movie.getTitle());
                     tvTitle.setText(movie.getTitle());
                     tvReleaseDate.setText(movie.getReleaseDate());

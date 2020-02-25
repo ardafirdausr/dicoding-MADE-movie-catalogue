@@ -105,11 +105,6 @@ public class MainActivity extends AppCompatActivity implements LoadFavouriteMovi
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void preExecute() {
         runOnUiThread(new Runnable() {
             @Override
